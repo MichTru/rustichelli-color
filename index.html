@@ -52,28 +52,7 @@
 </header>
 <main id="contenuto">
 
-
-<section class="hero" id="hero">
-  <canvas id="paint" aria-hidden="true"></canvas>
-  <div class="fallback" aria-hidden="true"></div>
-  <span class="hint" aria-hidden="true">Tocca e mescola</span>
-  <div class="wrap">
-    <h1 class="disp split" id="h1">Il colore giusto.</h1>
-    <div class="row">
-      <p class="lead fade" id="hlead">Pitture, vernici e smalti per imprese, progettisti e privati. Dal 1991, a Lugo, Faenza, Cervia e Riccione.</p>
-      <div class="cta fade" id="hcta">
-        <a class="btn rosso" href="preventivo.html">Chiedi un preventivo</a>
-        <a class="btn ghost" href="punti-vendita.html">Trova il negozio</a>
-      </div>
-    </div>
-  </div>
-  <span class="scrollcue" aria-hidden="true"></span>
-</section>
-
-<section class="story" id="story" aria-label="Dal barattolo al lavoro finito">
-  <div class="stage">
-    <div class="can" id="can">
-      <svg viewBox="-160 -120 320 420" aria-hidden="true">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="canSym" viewBox="-160 -120 320 420">
         <defs>
           <linearGradient id="metal" x1="0" x2="1"><stop offset="0" stop-color="#9EA2B8"/><stop offset=".22" stop-color="#E9EBF3"/><stop offset=".45" stop-color="#C3C6D6"/><stop offset=".8" stop-color="#F4F5FA"/><stop offset="1" stop-color="#8E92AA"/></linearGradient>
           <linearGradient id="lidg" x1="0" x2="1"><stop offset="0" stop-color="#7D819A"/><stop offset=".3" stop-color="#DADCE8"/><stop offset=".7" stop-color="#B5B8CA"/><stop offset="1" stop-color="#6D7189"/></linearGradient>
@@ -100,15 +79,40 @@
           <ellipse cx="0" cy="-4" rx="96" ry="21" fill="none" stroke="#6D7189" stroke-width="3"/>
           <ellipse cx="0" cy="-8" rx="36" ry="8" fill="#F5E617"/>
         </g>
-      </svg>
+      </symbol></svg>
+
+<section class="hero2" id="hero">
+  <div class="wrap">
+    <div class="htxt">
+      <h1 class="disp split" id="h1">Il colore giusto.</h1>
+      <p class="lead fade" id="hlead">Pitture, vernici e smalti per imprese, progettisti e privati. Dal 1991, a Lugo, Faenza, Cervia e Riccione.</p>
+      <div class="cta fade" id="hcta">
+        <a class="btn rosso" href="preventivo.html">Chiedi un preventivo</a>
+        <a class="btn ghost" href="punti-vendita.html">Trova il negozio</a>
+      </div>
     </div>
-    <svg class="streamsvg" aria-hidden="true"><path id="stream" fill="none" stroke="#F5E617" stroke-linecap="round"/></svg>
-    <div class="pourfill" id="pourfill"></div>
-    <div class="lines" aria-hidden="true">
-      <p data-r="0,.3">Ogni lavoro<br>parte da qui.</p>
-      <p data-r=".3,.6">Apriamo, misceliamo,<br>ti consigliamo.</p>
-      <p data-r=".74,1.1" class="dark">E il colore arriva<br>dove serve.</p>
+    <div class="stagec">
+      <span class="sun" aria-hidden="true"></span><span class="dot" aria-hidden="true"></span>
+      <canvas id="can3d" tabindex="0" role="button" aria-pressed="false" aria-label="Barattolo Rustichelli: aprilo per versare la tinta"></canvas>
+      <svg class="cansvg" viewBox="-160 -120 320 420" aria-hidden="true"><use href="#canSym"/></svg>
+      <span class="tap" id="tapHint" aria-hidden="true">Aprilo</span>
+      <span class="tname2" id="tname" aria-live="polite"></span>
     </div>
+  </div>
+  <canvas id="pour2" aria-hidden="true"></canvas>
+  <svg class="hdrips" viewBox="0 0 100 20" preserveAspectRatio="none" aria-hidden="true"><path d="M0 0H100V4C97 4 96 12 94 12S92 4 88 4 84 17 81 17 79 4 72 4 66 9 63 9 61 4 52 4 46 20 43 20 41 4 33 4 27 13 24 13 22 4 14 4 9 15 6 15 4 4 0 4Z"/></svg>
+</section>
+
+
+
+<section class="aud" id="chi">
+  <div class="wrap">
+    <h2 class="split" style="color:var(--blu)">Dal cantiere al salotto di casa.</h2>
+    <ul>
+      <li class="fade"><a href="servizi.html#imprese"><span><span class="big">Imprese e artigiani</span><span class="sub">Forniture all'ingrosso, sopralluoghi e consegna in cantiere. Edilizia, bioedilizia, ferro, legno, carrozzerie e nautica.</span></span><span class="arr ico"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path></svg></span></a></li>
+      <li class="fade"><a href="servizi.html#progettisti"><span><span class="big">Progettisti</span><span class="sub">Architetti, ingegneri e designer: consulenza sulle finiture, tintometria su misura e campioni veri.</span></span><span class="arr ico"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path></svg></span></a></li>
+      <li class="fade"><a href="servizi.html#casa"><span><span class="big">Casa e fai da te</span><span class="sub">Rinfrescare una stanza, sistemare un cancello, curare il legno, dipingere un murale.</span></span><span class="arr ico"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path></svg></span></a></li>
+    </ul>
   </div>
 </section>
 
@@ -189,16 +193,7 @@
   </div>
 </section>
 
-<section class="aud" id="chi">
-  <div class="wrap">
-    <h2 class="split" style="color:var(--blu)">Dal cantiere al salotto di casa.</h2>
-    <ul>
-      <li class="fade"><a href="servizi.html#imprese"><span><span class="big">Imprese e artigiani</span><span class="sub">Forniture all'ingrosso, sopralluoghi e consegna in cantiere. Edilizia, bioedilizia, ferro, legno, carrozzerie e nautica.</span></span><span class="arr ico"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path></svg></span></a></li>
-      <li class="fade"><a href="servizi.html#progettisti"><span><span class="big">Progettisti</span><span class="sub">Architetti, ingegneri e designer: consulenza sulle finiture, tintometria su misura e campioni veri.</span></span><span class="arr ico"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path></svg></span></a></li>
-      <li class="fade"><a href="servizi.html#casa"><span><span class="big">Casa e fai da te</span><span class="sub">Rinfrescare una stanza, sistemare un cancello, curare il legno, dipingere un murale.</span></span><span class="arr ico"><svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 256 256" xmlns="http://www.w3.org/2000/svg"><path d="M224.49,136.49l-72,72a12,12,0,0,1-17-17L187,140H40a12,12,0,0,1,0-24H187L135.51,64.48a12,12,0,0,1,17-17l72,72A12,12,0,0,1,224.49,136.49Z"></path></svg></span></a></li>
-    </ul>
-  </div>
-</section>
+
 
 <section class="prod" id="prodotti">
   <div class="wrap">
