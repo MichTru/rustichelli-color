@@ -7,6 +7,12 @@
 <title>Rustichelli Color</title>
 <meta name="description" content="Colorificio a Lugo, Faenza, Cervia e Riccione dal 1991. Pitture, vernici, smalti e attrezzature per imprese, progettisti e privati.">
 <link rel="icon" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rustichelli">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,700..900;1,100..125,800..900&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
@@ -90,8 +96,9 @@ header.menu{background:transparent;box-shadow:none;backdrop-filter:none}
 @keyframes cue{from{transform:translateY(-100%)}to{transform:translateY(260%)}}
 
 /* can story */
-.story{height:340vh;position:relative;background:#fff}
-.stage{position:sticky;top:0;height:100svh;overflow:hidden;display:grid;place-items:center}
+.story{position:relative;background:#fff}
+.stage{position:relative;height:100svh;min-height:560px;max-height:960px;overflow:hidden;display:grid;place-items:center}
+.pourfill.out{transition:opacity .6s;opacity:0}
 .can{position:absolute;left:50%;top:50%;width:min(300px,56vw);transform:translate(-50%,-50%);will-change:transform}
 .can svg{width:100%;height:auto;overflow:visible}
 #lid,#body{will-change:transform}
@@ -190,7 +197,8 @@ header.menu{background:transparent;box-shadow:none;backdrop-filter:none}
 /* 1991 */
 .since{background:var(--blu);color:#fff;padding:140px 0;overflow:hidden}
 .since .wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center}
-.y91{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:125%;font-size:clamp(130px,21vw,320px);line-height:.8;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px var(--giallo);background:linear-gradient(0deg,var(--giallo) 0 var(--f,0%),transparent var(--f,0%));-webkit-background-clip:text;background-clip:text;padding:0 .08em .05em 0}
+.y91{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:125%;font-size:clamp(130px,21vw,320px);line-height:.8;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px var(--giallo);background:linear-gradient(var(--giallo),var(--giallo)) bottom/100% 0% no-repeat;-webkit-background-clip:text;background-clip:text;transition:background-size 2.2s cubic-bezier(.6,.05,.25,1) .3s;padding:0 .08em .05em 0}
+.y91.in{background-size:100% 100%}
 .since h2{font-size:clamp(36px,4.6vw,64px)}
 .since p{color:#D5D6F2;margin-top:22px;font-size:18px;max-width:32em}
 .badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
@@ -255,6 +263,24 @@ footer a:hover{color:var(--giallo)}
 footer .legal{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 26px;font-size:13.5px;border-top:1px solid rgba(255,255,255,.14);padding-top:22px}
 .mega{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:125%;letter-spacing:-.06em;font-size:17.4vw;line-height:.8;color:var(--blu);white-space:nowrap;margin:60px 0 0 -1vw;user-select:none}
 
+/* intro */
+#intro{position:fixed;inset:0;z-index:200}
+#intro .sheetI{position:absolute;inset:0;background:var(--notte);display:grid;place-items:center;transition:transform 1s cubic-bezier(.7,0,.2,1)}
+#intro .drips{position:absolute;left:0;right:0;top:100%;height:18vh;width:100%;fill:var(--notte)}
+#intro .mark{position:relative;width:min(340px,70vw)}
+#intro .mark img{width:100%;height:auto;clip-path:inset(0 100% 0 0);transition:clip-path .7s cubic-bezier(.7,0,.2,1)}
+#intro .stroke{position:absolute;left:-6%;right:-6%;top:12%;bottom:12%;background:var(--giallo);border-radius:40px 12px 36px 10px;transform:scaleX(0) skewX(-14deg);transform-origin:left;transition:transform .55s cubic-bezier(.7,0,.2,1)}
+#intro .bar3{position:absolute;left:0;right:0;bottom:-34px;height:4px;display:flex;gap:4px}
+#intro .bar3 i{flex:1;background:rgba(255,255,255,.18);position:relative;overflow:hidden;border-radius:4px}
+#intro .bar3 i:after{content:"";position:absolute;inset:0;background:var(--c);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease) var(--d)}
+#intro.s1 .stroke{transform:scaleX(1) skewX(-14deg)}
+#intro.s2 .stroke{transform:scaleX(0) skewX(-14deg);transform-origin:right}
+#intro.s2 .mark img{clip-path:inset(0 0 0 0)}
+#intro.s2 .bar3 i:after{transform:none}
+#intro.s3 .sheetI{transform:translateY(calc(-100% - 18vh))}
+#intro.s3{pointer-events:none}
+html.intro-on body{overflow:hidden}
+
 /* cursor */
 .cur{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--giallo);pointer-events:none;z-index:100;mix-blend-mode:difference;transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease);display:none}
 .cur.big{width:56px;height:56px;margin:-28px 0 0 -28px}
@@ -302,7 +328,6 @@ footer .legal{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 26px;font-siz
   .qcard{padding:24px 18px;border-radius:30px}
   form{grid-template-columns:1fr}
   footer .wrap{grid-template-columns:1fr}
-  .story{height:300vh}
 }
 @media (prefers-reduced-motion:reduce){
   *,*:before,*:after{animation:none!important;transition:none!important}
@@ -311,6 +336,12 @@ footer .legal{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 26px;font-siz
 </style>
 </head>
 <body>
+<div id="intro" aria-hidden="true">
+  <div class="sheetI">
+    <div class="mark"><span class="stroke"></span><img src="assets/logo-bianco.png" alt=""><span class="bar3"><i style="--c:#5B5BF0;--d:0s"></i><i style="--c:#F5E617;--d:.12s"></i><i style="--c:#ED2E38;--d:.24s"></i></span></div>
+    <svg class="drips" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 0H100V4C97 4 96 12 94 12S92 4 88 4 84 17 81 17 79 4 72 4 66 9 63 9 61 4 52 4 46 20 43 20 41 4 33 4 27 13 24 13 22 4 14 4 9 15 6 15 4 4 0 4Z"/></svg>
+  </div>
+</div>
 <div class="cur" id="cur"></div>
 
 <header id="hdr">
@@ -668,7 +699,18 @@ const fine=matchMedia("(pointer:fine)").matches;
 $$(".split").forEach(el=>{let i=0;el.innerHTML=el.textContent.trim().split(/\s+/).map(w=>`<span class="w"><span style="--i:${i++}">${w}</span></span>`).join(" ")});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.2,rootMargin:"0px 0px -6% 0px"});
 $$(".split,.fade").forEach(el=>{if(el.closest(".hero"))return;io.observe(el)});
-requestAnimationFrame(()=>setTimeout(()=>{$("#h1").classList.add("in");setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)},200));
+function heroIn(){$("#h1").classList.add("in");setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}
+(function(){
+  const it=$("#intro");let seen=false;try{seen=sessionStorage.getItem("rc-intro")==="1"}catch(e){}
+  if(reduce||seen){it.remove();requestAnimationFrame(()=>setTimeout(heroIn,150));return}
+  document.documentElement.classList.add("intro-on");
+  const T=[];const at=(ms,f)=>T.push(setTimeout(f,ms));let done=false;
+  function end(){if(done)return;done=true;T.forEach(clearTimeout);it.classList.add("s1","s2","s3");document.documentElement.classList.remove("intro-on");setTimeout(heroIn,350);setTimeout(()=>it.remove(),1300);try{sessionStorage.setItem("rc-intro","1")}catch(e){}}
+  at(250,()=>it.classList.add("s1"));
+  at(850,()=>it.classList.add("s2"));
+  at(2200,end);
+  it.addEventListener("click",end);
+})();
 
 /* header */
 const hdr=$("#hdr"),hero=$("#hero"),mbar=$("#mbar"),mb=$(".menu-btn"),panel=$("#panel");let lastY=0;
@@ -732,10 +774,7 @@ in vec2 a;void main(){gl_Position=vec4(a,0,1);}`;
   const sec=$("#story"),stage=$(".stage"),can=$("#can"),lid=$("#lid"),stream=$("#stream"),fill=$("#pourfill"),top=$("#paintTop"),lip=$("#lip"),lines=$$(".lines p");
   const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
   const ease=t=>1-Math.pow(1-t,3);
-  if(reduce){sec.style.height="auto";stage.style.position="relative";stage.style.height="auto";stage.style.padding="80px 0";lines.forEach(l=>{l.style.position="static";l.classList.add("on")});return}
-  function upd(){
-    const r=sec.getBoundingClientRect(),total=sec.offsetHeight-innerHeight;
-    const p=Math.min(1,Math.max(0,-r.top/total));
+  function upd(p){
     const enter=ease(cl(p,0,.14)),lidp=ease(cl(p,.18,.36)),tilt=ease(cl(p,.38,.56)),pour=cl(p,.52,.72),flood=ease(cl(p,.7,.95));
     can.style.transform=`translate(-50%,-50%) translateY(${(1-enter)*24-tilt*6}vh) translateX(${tilt*12}vw) scale(${.82+enter*.18}) rotate(${-tilt*68}deg)`;
     lid.style.transform=`translate(${lidp*190}px,${-lidp*280}px) rotate(${lidp*85}deg)`;
@@ -746,12 +785,24 @@ in vec2 a;void main(){gl_Position=vec4(a,0,1);}`;
     const end=y+(H-y+40)*pour;
     stream.setAttribute("d",`M${x} ${y} C ${x-26} ${y+30}, ${x-30} ${y+60}, ${x-30} ${Math.max(y+60,end)}`);
     stream.setAttribute("stroke-width",w);
-    stream.style.opacity=pour>0&&tilt>.85?1:0;
+    stream.style.opacity=pour>0&&tilt>.85?1-cl(p,.9,.97):0;
     fill.style.clipPath=`circle(${flood*160}% at ${((x-30)/sr.width*100).toFixed(1)}% 100%)`;
     can.style.opacity=1-cl(p,.9,.98);
     lines.forEach(l=>{const[a,b]=l.dataset.r.split(",").map(Number);l.classList.toggle("on",p>=a&&p<b)});
   }
-  addEventListener("scroll",()=>requestAnimationFrame(upd),{passive:true});addEventListener("resize",upd);upd();
+  if(reduce){upd(.12);lines[0].classList.add("on");return}
+  const DUR=7000,HOLD=1600;let vis=false,start=null,raf=0;
+  new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis&&!raf){start=null;raf=requestAnimationFrame(loop)}},{threshold:.35}).observe(sec);
+  function loop(now){
+    if(!vis||document.hidden){raf=0;return}
+    if(start===null)start=now;
+    const t=now-start;
+    if(t<DUR)upd(t/DUR);
+    else if(t<DUR+HOLD){upd(1);if(t>DUR+HOLD-600)fill.classList.add("out")}
+    else{start=now;fill.classList.remove("out");upd(0)}
+    raf=requestAnimationFrame(loop);
+  }
+  upd(0);
 })();
 
 /* services carousel buttons */
@@ -761,7 +812,7 @@ $("#prev").onclick=()=>svc.scrollBy({left:-(svc.querySelector("article").offsetW
 
 /* 1991 fill */
 const y91=$("#y91");
-addEventListener("scroll",()=>{const r=y91.getBoundingClientRect();const p=Math.min(1,Math.max(0,(innerHeight-r.top)/(innerHeight*.9)));y91.style.setProperty("--f",(p*100).toFixed(1)+"%")},{passive:true});
+io.observe(y91);
 
 /* stores */
 function now(){const p=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Rome",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return{d:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(g("weekday")),m:(+g("hour")%24)*60+ +g("minute")}}
