@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0B0B4A">
+<title>Rustichelli Color</title>
+<meta name="description" content="Colorificio a Lugo, Faenza, Cervia e Riccione dal 1991. Pitture, vernici, smalti e attrezzature per imprese, progettisti e privati.">
+<link rel="icon" href="assets/favicon.png">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Rustichelli">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,100..125,700..900;1,100..125,800..900&family=Hanken+Grotesk:wght@400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --blu:#171796;--notte:#0B0B4A;--giallo:#F5E617;--rosso:#ED2E38;--ink:#14143A;--ink2:#4B4D6B;
+  --stucco:#F1F2F6;--linea:#DCDDE8;
+  --display:"Archivo",system-ui,sans-serif;--testo:"Hanken Grotesk",system-ui,sans-serif;
+  --ease:cubic-bezier(.2,.85,.25,1);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+html,body,main{overflow-x:clip}
+body{font-family:var(--testo);font-size:17px;line-height:1.55;color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased}
+a{color:inherit}
+img,svg{display:block;max-width:100%}
+.ico svg{width:1em;height:1em}
+:focus-visible{outline:3px solid var(--giallo);outline-offset:3px;border-radius:6px}
+.wrap{max-width:1280px;margin:0 auto;padding:0 24px}
+.disp{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:118%;letter-spacing:-.035em;line-height:.9}
+h2{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:114%;letter-spacing:-.03em;line-height:.95;font-size:clamp(40px,6vw,88px)}
+h3{font-family:var(--display);letter-spacing:-.015em}
+.lead{font-size:19px;max-width:34em}
+
+/* word reveal */
+.split .w{display:inline-block;overflow:hidden;vertical-align:top;padding:0 .04em .06em 0;margin-bottom:-.06em}
+.split .w>span{display:inline-block;transform:translateY(105%) rotate(4deg);transition:transform 1s var(--ease);transition-delay:calc(var(--i)*55ms)}
+.split.in .w>span{transform:none}
+.fade{opacity:0;transform:translateY(30px);transition:opacity .9s var(--ease),transform .9s var(--ease)}
+.fade.in{opacity:1;transform:none}
+
+.btn{display:inline-flex;align-items:center;gap:10px;font-family:var(--testo);font-weight:600;font-size:16px;text-decoration:none;padding:16px 26px;border-radius:999px;border:2px solid transparent;cursor:pointer;position:relative;overflow:hidden;isolation:isolate;transition:color .35s,transform .35s var(--ease)}
+.btn:before{content:"";position:absolute;left:var(--x,50%);top:var(--y,50%);width:0;height:0;border-radius:50%;transform:translate(-50%,-50%);transition:width .5s var(--ease),height .5s var(--ease);z-index:-1}
+.btn:hover:before{width:260%;height:600%}
+.btn.rosso{background:var(--rosso);color:#fff}
+.btn.rosso:before{background:var(--giallo)}
+.btn.rosso:hover{color:var(--ink)}
+.btn.ghost{border-color:currentColor}
+.btn.ghost:before{background:#fff}
+.btn.ghost:hover{color:var(--blu)}
+.btn .ico{font-size:19px}
+
+/* header */
+header{position:fixed;top:0;left:0;right:0;z-index:50;color:#fff;transition:background .4s,color .4s,transform .45s var(--ease)}
+header.solid{background:rgba(255,255,255,.92);backdrop-filter:blur(14px) saturate(1.4);-webkit-backdrop-filter:blur(14px) saturate(1.4);color:var(--ink);box-shadow:0 1px 0 var(--linea)}
+header.hide{transform:translateY(-100%)}
+.bar{display:flex;align-items:center;gap:30px;height:74px}
+.logo{position:relative;height:36px;width:149px}
+.logo img{position:absolute;inset:0;height:36px;width:auto;transition:opacity .4s}
+.logo .c{opacity:0}
+header.solid .logo .c{opacity:1}
+header.solid .logo .w{opacity:0}
+nav{display:flex;gap:30px;margin-left:auto;font-weight:500;font-size:15.5px}
+nav a{text-decoration:none;position:relative}
+nav a:after{content:"";position:absolute;left:0;right:0;bottom:-6px;height:3px;border-radius:3px;background:var(--giallo);transform:scaleX(0);transform-origin:right;transition:transform .4s var(--ease)}
+nav a:hover:after{transform:scaleX(1);transform-origin:left}
+.bar .btn{padding:11px 20px;font-size:15px}
+.menu-btn{display:none;margin-left:auto;background:none;border:0;color:inherit;font-size:30px;cursor:pointer;padding:6px}
+.panel{position:fixed;inset:0;z-index:-1;background:var(--notte);color:#fff;padding:110px 24px 40px;clip-path:circle(0 at calc(100% - 44px) 37px);transition:clip-path .7s var(--ease);display:flex;flex-direction:column}
+.panel.on{clip-path:circle(150% at calc(100% - 44px) 37px)}
+.panel a{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:115%;font-size:44px;letter-spacing:-.03em;text-decoration:none;padding:6px 0;line-height:1.05}
+.panel .btn{margin-top:auto;font-family:var(--testo);font-style:normal;font-size:17px;align-self:flex-start;letter-spacing:0}
+header.menu{color:#fff}
+header.menu .logo .w{opacity:1}header.menu .logo .c{opacity:0}
+header.menu{background:transparent;box-shadow:none;backdrop-filter:none}
+
+/* hero */
+.hero{position:relative;height:100svh;min-height:600px;background:var(--notte);color:#fff;overflow:hidden}
+#paint{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:pan-y}
+.hero .fallback{position:absolute;inset:0;background:radial-gradient(60% 50% at 20% 30%,#2B2BC2 0,transparent 70%),radial-gradient(40% 40% at 80% 70%,rgba(245,230,23,.7) 0,transparent 70%),radial-gradient(35% 35% at 70% 20%,rgba(237,46,56,.7) 0,transparent 70%),var(--notte);display:none}
+.nogl .hero .fallback{display:block}
+.hero:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,11,74,.25) 0,rgba(11,11,74,0) 30%,rgba(11,11,74,.0) 50%,rgba(11,11,74,.65) 100%);pointer-events:none}
+.hero .wrap{position:relative;z-index:2;height:100%;display:flex;flex-direction:column;justify-content:flex-end;padding-bottom:9vh;pointer-events:none}
+.hero h1{font-size:clamp(64px,13vw,210px)}
+.hero .row{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap;margin-top:34px;pointer-events:auto}
+.hero .lead{color:rgba(255,255,255,.88)}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.hint{position:absolute;z-index:2;right:24px;top:50%;writing-mode:vertical-rl;font-size:13px;letter-spacing:.08em;opacity:.7}
+.scrollcue{position:absolute;z-index:2;left:50%;bottom:22px;width:2px;height:44px;background:rgba(255,255,255,.25);overflow:hidden;border-radius:2px}
+.scrollcue:after{content:"";position:absolute;left:0;right:0;top:0;height:40%;background:#fff;animation:cue 1.8s var(--ease) infinite}
+@keyframes cue{from{transform:translateY(-100%)}to{transform:translateY(260%)}}
+
+/* can story */
+.story{position:relative;background:#fff}
+.stage{position:relative;height:100svh;min-height:560px;max-height:960px;overflow:hidden;display:grid;place-items:center}
+.pourfill.out{transition:opacity .6s;opacity:0}
+.can{position:absolute;left:50%;top:50%;width:min(300px,56vw);transform:translate(-50%,-50%);will-change:transform}
+.can svg{width:100%;height:auto;overflow:visible}
+#lid,#body{will-change:transform}
+.streamsvg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.pourfill{position:absolute;inset:0;background:var(--giallo);clip-path:circle(0 at 50% 100%);will-change:clip-path}
+.lines{position:absolute;left:0;right:0;top:12vh;text-align:center;padding:0 24px;pointer-events:none}
+.lines p{position:absolute;left:0;right:0;font-family:var(--display);font-weight:900;font-style:italic;font-stretch:114%;letter-spacing:-.03em;line-height:.98;font-size:clamp(34px,5.4vw,76px);color:var(--blu);opacity:0;transform:translateY(30px);transition:opacity .5s,transform .6s var(--ease)}
+.lines p.on{opacity:1;transform:none}
+.lines p.dark{color:var(--ink)}
+
+/* services on yellow */
+.svcs{background:var(--giallo);padding:40px 0 120px;color:var(--ink)}
+.svcs h2{color:var(--blu);max-width:13ch}
+.svcs .lead{margin-top:22px;color:var(--ink)}
+.track-wrap{margin-top:60px}
+.svc{display:flex;gap:22px;overflow-x:auto;scroll-snap-type:x mandatory;padding:0 24px 20px;scrollbar-width:none}
+.svc::-webkit-scrollbar{display:none}
+.svc article{flex:0 0 min(420px,84vw);scroll-snap-align:start;background:#fff;border-radius:36px;overflow:hidden;display:flex;flex-direction:column;transition:transform .5s var(--ease)}
+.svc article:hover{transform:translateY(-6px) rotate(-.6deg)}
+.svc article:nth-child(1){margin-left:max(0px,calc((100vw - 1280px)/2))}
+.loop{aspect-ratio:16/10;position:relative;overflow:hidden}
+.svc .txt{padding:24px 28px 30px}
+.svc h3{font-size:23px;font-weight:800;font-stretch:106%;line-height:1.15;display:flex;align-items:center;gap:10px;color:var(--blu)}
+.svc h3 .ico{font-size:24px;color:var(--rosso);flex:none}
+.svc p{color:var(--ink2);margin-top:8px;font-size:16px}
+.drag{display:flex;gap:10px;margin-top:26px}
+.drag button{width:52px;height:52px;border-radius:50%;border:2px solid var(--ink);background:none;font-size:22px;display:grid;place-items:center;cursor:pointer;color:var(--ink);transition:background .3s,color .3s}
+.drag button:hover{background:var(--ink);color:var(--giallo)}
+{{LOOPS}}
+
+/* audiences */
+.aud{background:#fff;padding:130px 0}
+.aud ul{list-style:none;margin-top:50px;border-top:2px solid var(--ink)}
+.aud li a{display:grid;grid-template-columns:1fr auto;align-items:center;gap:20px;padding:30px 0;border-bottom:1px solid var(--linea);text-decoration:none;position:relative;isolation:isolate}
+.aud li a:before{content:"";position:absolute;inset:0 -24px;background:var(--c);transform:scaleY(0);transform-origin:bottom;transition:transform .55s var(--ease);z-index:-1;border-radius:20px}
+.aud li a:hover:before{transform:scaleY(1)}
+.aud .big{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:116%;letter-spacing:-.03em;font-size:clamp(34px,5vw,70px);line-height:1;color:var(--blu);transition:color .4s,transform .55s var(--ease);display:block}
+.aud li a:hover .big{transform:translateX(16px)}
+.aud .sub{display:block;font-size:17px;color:var(--ink2);margin-top:10px;max-width:40em;transition:color .4s}
+.aud .arr{width:64px;height:64px;border-radius:50%;border:2px solid var(--ink);display:grid;place-items:center;font-size:26px;transition:transform .55s var(--ease),background .4s,color .4s}
+.aud li a:hover .arr{transform:rotate(-45deg);background:var(--ink);color:#fff}
+.aud li:nth-child(1) a{--c:#171796}.aud li:nth-child(2) a{--c:#F5E617}.aud li:nth-child(3) a{--c:#ED2E38}
+.aud li:nth-child(1) a:hover .big,.aud li:nth-child(1) a:hover .sub,.aud li:nth-child(3) a:hover .big,.aud li:nth-child(3) a:hover .sub{color:#fff}
+.aud li:nth-child(1) a:hover .arr,.aud li:nth-child(3) a:hover .arr{border-color:#fff;background:#fff;color:var(--ink)}
+
+/* products */
+.prod{background:var(--stucco);padding:130px 0 0;border-radius:48px 48px 0 0}
+.prod .head{display:flex;justify-content:space-between;align-items:end;gap:30px;flex-wrap:wrap}
+.prod h2{color:var(--blu)}
+.cats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:56px}
+.cats a{display:flex;flex-direction:column;justify-content:space-between;gap:30px;min-height:170px;padding:22px;border-radius:26px;background:#fff;text-decoration:none;font-family:var(--display);font-weight:800;font-stretch:104%;font-size:20px;line-height:1.12;letter-spacing:-.01em;color:var(--ink);position:relative;overflow:hidden;isolation:isolate;transition:color .4s;hyphens:auto;overflow-wrap:anywhere}
+.cats a:before{content:"";position:absolute;left:var(--x,50%);top:var(--y,50%);width:0;height:0;border-radius:50%;transform:translate(-50%,-50%);background:var(--blu);transition:width .6s var(--ease),height .6s var(--ease);z-index:-1}
+.cats a:hover:before{width:240%;height:240%}
+.cats a:hover{color:#fff}
+.cats .ico{width:52px;height:52px;border-radius:50%;background:var(--stucco);display:grid;place-items:center;font-size:26px;color:var(--blu);transition:background .4s,transform .6s var(--ease)}
+.cats a:hover .ico{background:var(--giallo);transform:rotate(-12deg) scale(1.08)}
+.marquee{margin-top:110px;overflow:hidden;padding:34px 0;background:var(--ink);color:#fff}
+.mtrack{display:flex;gap:64px;width:max-content;animation:mq 60s linear infinite}
+.marquee:hover .mtrack{animation-play-state:paused}
+.mtrack span{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:115%;font-size:42px;letter-spacing:-.02em;white-space:nowrap;color:rgba(255,255,255,.35);transition:color .3s}
+.mtrack span:hover,.mtrack span.cc{color:var(--giallo)}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+/* 1991 */
+.since{background:var(--blu);color:#fff;padding:140px 0;overflow:hidden}
+.since .wrap{display:grid;grid-template-columns:1.15fr 1fr;gap:60px;align-items:center}
+.y91{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:125%;font-size:clamp(130px,21vw,320px);line-height:.8;letter-spacing:-.06em;color:transparent;-webkit-text-stroke:2px var(--giallo);background:linear-gradient(var(--giallo),var(--giallo)) bottom/100% 0% no-repeat;-webkit-background-clip:text;background-clip:text;transition:background-size 2.2s cubic-bezier(.6,.05,.25,1) .3s;padding:0 .08em .05em 0}
+.y91.in{background-size:100% 100%}
+.since h2{font-size:clamp(36px,4.6vw,64px)}
+.since p{color:#D5D6F2;margin-top:22px;font-size:18px;max-width:32em}
+.badges{display:flex;flex-wrap:wrap;gap:10px;margin-top:30px}
+.badges span{padding:9px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,.35);font-weight:600;font-size:14.5px}
+
+/* stores */
+.stores-s{padding:130px 0;background:#fff}
+.stores-s h2{color:var(--blu)}
+.stores{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin-top:56px}
+.st{border-radius:32px;background:var(--stucco);padding:26px 24px 22px;display:flex;flex-direction:column;gap:12px;transition:transform .5s var(--ease)}
+.st:hover{transform:translateY(-6px)}
+.st h3{font-size:38px;font-weight:900;font-style:italic;font-stretch:118%;line-height:1;color:var(--blu)}
+.st .tag{font-size:14px;font-weight:600;color:var(--ink2)}
+.state{display:inline-flex;align-items:center;gap:8px;font-weight:600;font-size:15px}
+.state:before{content:"";width:9px;height:9px;border-radius:50%;background:#A3A5BE}
+.state.open:before{background:#1FA75A;box-shadow:0 0 0 4px rgba(31,167,90,.18);animation:pulse 2s infinite}
+@keyframes pulse{50%{box-shadow:0 0 0 7px rgba(31,167,90,0)}}
+.st .addr{font-size:15.5px;color:var(--ink2)}
+.st .today{font-size:14.5px;display:flex;gap:8px;align-items:center;color:var(--ink2)}
+.st .today .ico{font-size:18px;flex:none}
+.acts{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:auto;padding-top:8px}
+.acts a{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:12.5px;font-weight:600;text-decoration:none;padding:11px 4px;border-radius:16px;background:#fff;color:var(--blu);transition:background .3s,color .3s}
+.acts a:hover{background:var(--blu);color:#fff}
+.acts a .ico{font-size:22px}
+.acts a.call{background:var(--rosso);color:#fff}
+
+/* quote */
+.quote{background:var(--notte);color:#fff;padding:130px 0;border-radius:48px 48px 0 0;position:relative;z-index:1}
+.quote .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:60px;align-items:start}
+.quote h2{color:#fff}
+.quote .lead{color:#C9CAEE;margin-top:22px}
+.qcard{background:#fff;color:var(--ink);border-radius:40px;padding:38px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+label{display:flex;flex-direction:column;gap:7px;font-size:14.5px;font-weight:600}
+.full{grid-column:1/-1}
+input,select,textarea{font:inherit;font-size:16px;font-weight:400;padding:14px 16px;border:1.5px solid var(--linea);border-radius:16px;background:var(--stucco);color:var(--ink);width:100%;transition:border-color .2s,background .2s}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--blu);background:#fff}
+textarea{min-height:110px;resize:vertical}
+.seg{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:8px;border:0}
+.seg legend{font-size:14.5px;font-weight:600;margin-bottom:8px;width:100%}
+.seg input{position:absolute;opacity:0;width:1px;height:1px}
+.seg label{flex-direction:row;font-weight:500;padding:10px 16px;border-radius:999px;background:var(--stucco);border:1.5px solid var(--linea);cursor:pointer;transition:background .3s,color .3s}
+.seg input:checked+label{background:var(--blu);border-color:var(--blu);color:#fff}
+.seg input:focus-visible+label{outline:3px solid var(--blu);outline-offset:2px}
+.file{flex-direction:row;align-items:center;gap:12px;padding:14px 16px;border:1.5px dashed #B9BBD0;border-radius:16px;cursor:pointer;font-weight:500;color:var(--ink2)}
+.file .ico{font-size:22px;color:var(--blu)}
+.file input{display:none}
+.check{flex-direction:row;align-items:flex-start;gap:10px;font-weight:400;font-size:14.5px;color:var(--ink2)}
+.check input{width:20px;height:20px;flex:none;margin-top:2px;accent-color:var(--blu)}
+form .btn{grid-column:1/-1;justify-self:start}
+.msg{grid-column:1/-1;font-size:15px;font-weight:600;min-height:1em;color:var(--rosso)}
+.contacts{margin-top:34px;display:flex;flex-direction:column;gap:14px}
+.contacts a{display:flex;align-items:center;gap:12px;text-decoration:none;font-weight:600}
+.contacts .ico{width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;font-size:21px;color:var(--giallo)}
+
+footer{background:var(--notte);color:#A9AAD6;padding:30px 0 120px;font-size:15px;overflow:hidden}
+footer .wrap{display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr;gap:40px;border-top:1px solid rgba(255,255,255,.14);padding-top:50px}
+footer img{height:34px;width:auto;margin-bottom:18px}
+footer strong{color:#fff;display:block;margin-bottom:8px}
+footer a{color:#fff;text-decoration:none}
+footer a:hover{color:var(--giallo)}
+footer .legal{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:6px 26px;font-size:13.5px;border-top:1px solid rgba(255,255,255,.14);padding-top:22px}
+.mega{font-family:var(--display);font-weight:900;font-style:italic;font-stretch:125%;letter-spacing:-.06em;font-size:17.4vw;line-height:.8;color:var(--blu);white-space:nowrap;margin:60px 0 0 -1vw;user-select:none}
+
+/* intro */
+#intro{position:fixed;inset:0;z-index:200}
+#intro .sheetI{position:absolute;inset:0;background:var(--notte);display:grid;place-items:center;transition:transform 1s cubic-bezier(.7,0,.2,1)}
+#intro .drips{position:absolute;left:0;right:0;top:100%;height:18vh;width:100%;fill:var(--notte)}
+#intro .mark{position:relative;width:min(340px,70vw)}
+#intro .mark img{width:100%;height:auto;clip-path:inset(0 100% 0 0);transition:clip-path .7s cubic-bezier(.7,0,.2,1)}
+#intro .stroke{position:absolute;left:-6%;right:-6%;top:12%;bottom:12%;background:var(--giallo);border-radius:40px 12px 36px 10px;transform:scaleX(0) skewX(-14deg);transform-origin:left;transition:transform .55s cubic-bezier(.7,0,.2,1)}
+#intro .bar3{position:absolute;left:0;right:0;bottom:-34px;height:4px;display:flex;gap:4px}
+#intro .bar3 i{flex:1;background:rgba(255,255,255,.18);position:relative;overflow:hidden;border-radius:4px}
+#intro .bar3 i:after{content:"";position:absolute;inset:0;background:var(--c);transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease) var(--d)}
+#intro.s1 .stroke{transform:scaleX(1) skewX(-14deg)}
+#intro.s2 .stroke{transform:scaleX(0) skewX(-14deg);transform-origin:right}
+#intro.s2 .mark img{clip-path:inset(0 0 0 0)}
+#intro.s2 .bar3 i:after{transform:none}
+#intro.s3 .sheetI{transform:translateY(calc(-100% - 18vh))}
+#intro.s3{pointer-events:none}
+html.intro-on body{overflow:hidden}
+
+/* cursor */
+.cur{position:fixed;left:0;top:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:var(--giallo);pointer-events:none;z-index:100;mix-blend-mode:difference;transition:width .35s var(--ease),height .35s var(--ease),margin .35s var(--ease);display:none}
+.cur.big{width:56px;height:56px;margin:-28px 0 0 -28px}
+@media (pointer:fine){.cur{display:block}}
+
+/* mobile bar + sheet */
+.mbar{display:none}
+.sheet{position:fixed;inset:0;z-index:80;display:none}
+.sheet.on{display:block}
+.sheet .bg{position:absolute;inset:0;background:rgba(11,11,74,.5);animation:fi .3s}
+@keyframes fi{from{opacity:0}}
+.sheet .box{position:absolute;left:0;right:0;bottom:0;background:#fff;border-radius:28px 28px 0 0;padding:22px 20px calc(24px + env(safe-area-inset-bottom));animation:up .4s var(--ease)}
+@keyframes up{from{transform:translateY(100%)}}
+.sheet h3{font-size:24px;font-weight:900;font-style:italic;margin-bottom:12px;color:var(--blu)}
+.sheet a{display:flex;justify-content:space-between;align-items:center;padding:15px 4px;border-top:1px solid var(--linea);text-decoration:none;font-weight:600;font-size:17px}
+.sheet a span{color:var(--ink2);font-weight:500;font-size:15px}
+.sheet .x{position:absolute;right:16px;top:16px;background:var(--stucco);border:0;border-radius:50%;width:38px;height:38px;font-size:18px;display:grid;place-items:center;cursor:pointer;color:var(--ink)}
+
+@media (max-width:1000px){
+  nav,.bar .btn{display:none}
+  .menu-btn{display:block}
+  .hint{display:none}
+  .since .wrap,.quote .wrap{grid-template-columns:1fr;gap:40px}
+  .cats{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .stores{grid-template-columns:repeat(2,minmax(0,1fr))}
+  footer .wrap{grid-template-columns:1fr 1fr}
+  .mbar{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;left:10px;right:10px;bottom:calc(10px + env(safe-area-inset-bottom));z-index:45;background:rgba(11,11,74,.92);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-radius:24px;padding:6px;gap:6px;transform:translateY(160%);transition:transform .5s var(--ease)}
+  .mbar.on{transform:none}
+  .mbar button{background:none;border:0;color:#fff;font:inherit;font-weight:600;font-size:13px;display:flex;flex-direction:column;align-items:center;gap:3px;padding:8px 0;border-radius:18px;cursor:pointer}
+  .mbar button:first-child{background:var(--rosso)}
+  .mbar .ico{font-size:22px}
+}
+@media (max-width:600px){
+  body{font-size:16px}
+  .wrap{padding:0 20px}
+  .lead{font-size:17.5px}
+  .bar{height:64px}
+  .hero .wrap{padding-bottom:12vh}
+  .hero .row{margin-top:24px}
+  .aud,.stores-s,.quote,.since{padding:96px 0}
+  .prod{padding-top:96px}
+  .aud .arr{width:48px;height:48px;font-size:20px}
+  .cats a{min-height:140px;padding:18px;font-size:17px;gap:20px}
+  .stores{grid-template-columns:1fr}
+  .qcard{padding:24px 18px;border-radius:30px}
+  form{grid-template-columns:1fr}
+  footer .wrap{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*:before,*:after{animation:none!important;transition:none!important}
+  .split .w>span,.fade{transform:none!important;opacity:1!important}
+}
+</style>
+</head>
+<body>
+<div id="intro" aria-hidden="true">
+  <div class="sheetI">
+    <div class="mark"><span class="stroke"></span><img src="assets/logo-bianco.png" alt=""><span class="bar3"><i style="--c:#5B5BF0;--d:0s"></i><i style="--c:#F5E617;--d:.12s"></i><i style="--c:#ED2E38;--d:.24s"></i></span></div>
+    <svg class="drips" viewBox="0 0 100 20" preserveAspectRatio="none"><path d="M0 0H100V4C97 4 96 12 94 12S92 4 88 4 84 17 81 17 79 4 72 4 66 9 63 9 61 4 52 4 46 20 43 20 41 4 33 4 27 13 24 13 22 4 14 4 9 15 6 15 4 4 0 4Z"/></svg>
+  </div>
+</div>
+<div class="cur" id="cur"></div>
+
+<header id="hdr">
+  <div class="wrap bar">
+    <a class="logo" href="#top" aria-label="Rustichelli Color"><img class="w" src="assets/logo-bianco.png" alt=""><img class="c" src="assets/logo.png" alt=""></a>
+    <nav aria-label="Principale">
+      <a href="#servizi">Servizi</a>
+      <a href="#chi">Per chi lavoriamo</a>
+      <a href="#prodotti">Prodotti</a>
+      <a href="#negozi">Punti vendita</a>
+    </nav>
+    <a class="btn rosso" href="#preventivo">Chiedi un preventivo</a>
+    <button class="menu-btn ico" type="button" aria-expanded="false" aria-controls="panel" aria-label="Apri il menu">{{PiListBold}}</button>
+  </div>
+  <div class="panel" id="panel">
+    <a href="#servizi">Servizi</a>
+    <a href="#chi">Per chi lavoriamo</a>
+    <a href="#prodotti">Prodotti</a>
+    <a href="#azienda">Azienda</a>
+    <a href="#negozi">Punti vendita</a>
+    <a class="btn rosso" href="#preventivo">Chiedi un preventivo</a>
+  </div>
+</header>
+
+<main id="top">
+
+<section class="hero" id="hero">
+  <canvas id="paint" aria-hidden="true"></canvas>
+  <div class="fallback" aria-hidden="true"></div>
+  <span class="hint" aria-hidden="true">Tocca e mescola</span>
+  <div class="wrap">
+    <h1 class="disp split" id="h1">Il colore giusto.</h1>
+    <div class="row">
+      <p class="lead fade" id="hlead">Pitture, vernici e smalti per imprese, progettisti e privati. Dal 1991, a Lugo, Faenza, Cervia e Riccione.</p>
+      <div class="cta fade" id="hcta">
+        <a class="btn rosso" href="#preventivo">Chiedi un preventivo</a>
+        <a class="btn ghost" href="#negozi">Trova il negozio</a>
+      </div>
+    </div>
+  </div>
+  <span class="scrollcue" aria-hidden="true"></span>
+</section>
+
+<section class="story" id="story" aria-label="Dal barattolo al lavoro finito">
+  <div class="stage">
+    <div class="can" id="can">
+      <svg viewBox="-160 -120 320 420" aria-hidden="true">
+        <defs>
+          <linearGradient id="metal" x1="0" x2="1"><stop offset="0" stop-color="#9EA2B8"/><stop offset=".22" stop-color="#E9EBF3"/><stop offset=".45" stop-color="#C3C6D6"/><stop offset=".8" stop-color="#F4F5FA"/><stop offset="1" stop-color="#8E92AA"/></linearGradient>
+          <linearGradient id="lidg" x1="0" x2="1"><stop offset="0" stop-color="#7D819A"/><stop offset=".3" stop-color="#DADCE8"/><stop offset=".7" stop-color="#B5B8CA"/><stop offset="1" stop-color="#6D7189"/></linearGradient>
+          <clipPath id="canclip"><path d="M-110 0H110V230A110 26 0 0 1 -110 230Z"/></clipPath>
+        </defs>
+        <g id="body">
+          <path d="M-110 0H110V230A110 26 0 0 1 -110 230Z" fill="url(#metal)"/>
+          <g clip-path="url(#canclip)">
+            <rect x="-110" y="40" width="220" height="150" fill="#fff"/>
+            <rect x="-110" y="40" width="220" height="12" fill="#171796"/>
+            <rect x="-110" y="178" width="220" height="12" fill="#ED2E38"/>
+            <image href="assets/logo.png" x="-92" y="78" width="184" height="44.5"/>
+            <rect x="-60" y="140" width="120" height="22" rx="11" fill="#F5E617"/>
+          </g>
+          <ellipse cx="0" cy="0" rx="110" ry="26" fill="#8C90A8"/>
+          <ellipse cx="0" cy="0" rx="98" ry="21" fill="#F5E617" id="paintTop" opacity="0"/>
+          <circle id="lip" cx="-104" cy="2" r="1" fill="none"/>
+          <path d="M-110 0V230" stroke="#6D7189" stroke-width="2"/><path d="M110 0V230" stroke="#6D7189" stroke-width="2"/>
+          <path d="M-108 6 C -140 30 -160 60 -150 110" fill="none" stroke="#3B3F5C" stroke-width="5" stroke-linecap="round"/>
+          <path d="M108 6 C 140 30 160 60 150 110" fill="none" stroke="#3B3F5C" stroke-width="5" stroke-linecap="round"/>
+        </g>
+        <g id="lid">
+          <ellipse cx="0" cy="0" rx="114" ry="28" fill="url(#lidg)"/>
+          <ellipse cx="0" cy="-4" rx="96" ry="21" fill="none" stroke="#6D7189" stroke-width="3"/>
+          <ellipse cx="0" cy="-8" rx="36" ry="8" fill="#F5E617"/>
+        </g>
+      </svg>
+    </div>
+    <svg class="streamsvg" aria-hidden="true"><path id="stream" fill="none" stroke="#F5E617" stroke-linecap="round"/></svg>
+    <div class="pourfill" id="pourfill"></div>
+    <div class="lines" aria-hidden="true">
+      <p data-r="0,.3">Ogni lavoro<br>parte da qui.</p>
+      <p data-r=".3,.6">Apriamo, misceliamo,<br>ti consigliamo.</p>
+      <p data-r=".74,1.1" class="dark">E il colore arriva<br>dove serve.</p>
+    </div>
+  </div>
+</section>
+
+<section class="svcs" id="servizi">
+  <div class="wrap">
+    <h2 class="split">Non ti vendiamo solo il barattolo.</h2>
+    <p class="lead fade">Sopralluoghi, tinte preparate al momento, campioni, corsi e consegne in cantiere.</p>
+  </div>
+  <div class="track-wrap">
+    <div class="svc" id="svc">{{SVC}}</div>
+    <div class="wrap drag"><button type="button" id="prev" aria-label="Servizio precedente" class="ico">{{PiArrowLeftBold}}</button><button type="button" id="next" aria-label="Servizio successivo" class="ico">{{PiArrowRightBold}}</button></div>
+  </div>
+</section>
+
+<section class="aud" id="chi">
+  <div class="wrap">
+    <h2 class="split" style="color:var(--blu)">Dal cantiere al salotto di casa.</h2>
+    <ul>
+      <li class="fade"><a href="#preventivo"><span><span class="big">Imprese e artigiani</span><span class="sub">Forniture all'ingrosso, sopralluoghi e consegna in cantiere. Edilizia, bioedilizia, ferro, legno, carrozzerie e nautica.</span></span><span class="arr ico">{{PiArrowRightBold}}</span></a></li>
+      <li class="fade"><a href="#preventivo"><span><span class="big">Progettisti</span><span class="sub">Architetti, ingegneri e designer: consulenza sulle finiture, tintometria su misura e campioni veri.</span></span><span class="arr ico">{{PiArrowRightBold}}</span></a></li>
+      <li class="fade"><a href="#preventivo"><span><span class="big">Casa e fai da te</span><span class="sub">Rinfrescare una stanza, sistemare un cancello, curare il legno, dipingere un murale.</span></span><span class="arr ico">{{PiArrowRightBold}}</span></a></li>
+    </ul>
+  </div>
+</section>
+
+<section class="prod" id="prodotti">
+  <div class="wrap">
+    <div class="head"><h2 class="split">Cosa trovi da noi</h2><p class="lead fade">Se non lo vedi in negozio, lo ordiniamo.</p></div>
+    <div class="cats">{{CATS}}</div>
+  </div>
+  <div class="marquee" aria-label="Marchi trattati"><div class="mtrack">{{BRANDS}}</div></div>
+</section>
+
+<section class="since" id="azienda">
+  <div class="wrap">
+    <div class="y91" id="y91" aria-hidden="true">1991</div>
+    <div>
+      <h2 class="split">Una storia di colore in Romagna.</h2>
+      <p class="fade">Rustichelli Color nasce nel 1991 da un gruppo di imprenditori lughesi e raccoglie l'eredità di Rustichelli e Contoli, per decenni un sinonimo di vernice in provincia di Ravenna.</p>
+      <p class="fade">Siamo partiti da un banco e qualche scaffale. Oggi abbiamo quattro punti vendita e lo stesso obiettivo di allora: il miglior rapporto tra qualità e prezzo.</p>
+      <div class="badges fade"><span>Caparol Center</span><span>Rete Energia &amp; Habitat</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="stores-s" id="negozi">
+  <div class="wrap">
+    <h2 class="split">Vieni a trovarci</h2>
+    <div class="stores">{{STORES}}</div>
+  </div>
+</section>
+
+<section class="quote" id="preventivo">
+  <div class="wrap">
+    <div>
+      <h2 class="split">Raccontaci il lavoro.</h2>
+      <p class="lead fade">Ti richiamiamo dal punto vendita che scegli, con un preventivo o per fissare un sopralluogo.</p>
+      <div class="contacts fade">
+        <a href="tel:+39054522075"><span class="ico">{{PiPhoneBold}}</span>Lugo 0545 22075</a>
+        <a href="#negozi"><span class="ico">{{PiMapPinBold}}</span>Tutti i punti vendita</a>
+      </div>
+    </div>
+    <div class="qcard fade">
+      <form id="form" novalidate>
+        <fieldset class="seg">
+          <legend>Sei</legend>
+          <input type="radio" name="tipo" id="t1" value="Impresa o artigiano" checked><label for="t1">Impresa o artigiano</label>
+          <input type="radio" name="tipo" id="t2" value="Progettista"><label for="t2">Progettista</label>
+          <input type="radio" name="tipo" id="t3" value="Privato"><label for="t3">Privato</label>
+        </fieldset>
+        <label>Nome<input name="nome" autocomplete="name" required></label>
+        <label>Telefono<input name="tel" type="tel" autocomplete="tel" required></label>
+        <label class="full">Email<input name="email" type="email" autocomplete="email"></label>
+        <label>Punto vendita<select name="store">{{OPTS}}</select></label>
+        <label>Tipo di lavoro<select name="lavoro">
+          <option>Tinteggiatura interni</option><option>Facciata e esterni</option><option>Smalti su ferro o legno</option><option>Impermeabilizzazione</option><option>Isolamento</option><option>Restauro</option><option>Altro</option>
+        </select></label>
+        <label class="full">Metri quadri indicativi<input name="mq" inputmode="numeric" placeholder="Es. 90"></label>
+        <label class="full">Cosa devi fare<textarea name="msg" placeholder="Es. tinteggiare un appartamento, smaltare una ringhiera…"></textarea></label>
+        <label class="full file"><span class="ico">{{PiCameraBold}}</span><span id="fileTxt">Aggiungi foto del lavoro</span><input type="file" name="foto" accept="image/*" multiple></label>
+        <label class="full check"><input type="checkbox" name="privacy" required>Acconsento al trattamento dei dati per essere ricontattato, secondo l'informativa privacy.</label>
+        <button class="btn rosso" type="submit">Invia la richiesta</button>
+        <p class="msg" id="msg" role="status" aria-live="polite"></p>
+      </form>
+      <!-- DA FORNIRE: email o servizio di invio (es. Formspree) -->
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div><img src="assets/logo-bianco.png" alt="Rustichelli Color">Rustichelli Color Srl<br>Via Piratello 108/1-2, 48022 Lugo (RA)</div>
+    <div><strong>Punti vendita</strong>{{FOOTST}}</div>
+    <div><strong>Sito</strong><a href="#servizi">Servizi</a><br><a href="#chi">Per chi lavoriamo</a><br><a href="#prodotti">Prodotti</a><br><a href="#preventivo">Preventivo</a></div>
+    <div><strong>Seguici</strong><a href="https://www.facebook.com/rustichellicolorsrl">Facebook</a><br><!-- DA FORNIRE: Instagram --></div>
+    <div class="legal"><span>P.IVA e C.F. 02464580394</span><span>REA 204151</span><span>Capitale sociale 25.000 € i.v.</span><a href="#top">Privacy</a><a href="#top">Cookie</a></div>
+  </div>
+  <div class="mega" aria-hidden="true">Rustichelli</div>
+</footer>
+
+<div class="mbar" id="mbar" aria-label="Contatti rapidi">
+  <button type="button" data-sheet="call"><span class="ico">{{PiPhoneBold}}</span>Chiama</button>
+  <button type="button" data-sheet="wa"><span class="ico">{{PiWhatsappLogoBold}}</span>WhatsApp</button>
+  <button type="button" data-sheet="map"><span class="ico">{{PiMapPinBold}}</span>Indicazioni</button>
+</div>
+<div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetT">
+  <div class="bg" data-close></div>
+  <div class="box"><button class="x ico" type="button" data-close aria-label="Chiudi">{{PiXBold}}</button><h3 id="sheetT"></h3><div id="sheetL"></div></div>
+</div>
+
+<script id="fs" type="x-shader">#version 300 es
+precision highp float;
+uniform vec2 R;uniform float T;uniform vec4 P[8];
+out vec4 o;
+vec2 h2(vec2 p){p=vec2(dot(p,vec2(127.1,311.7)),dot(p,vec2(269.5,183.3)));return fract(sin(p)*43758.5453)*2.-1.;}
+float n(vec2 p){vec2 i=floor(p),f=fract(p),u=f*f*(3.-2.*f);
+ return mix(mix(dot(h2(i),f),dot(h2(i+vec2(1,0)),f-vec2(1,0)),u.x),mix(dot(h2(i+vec2(0,1)),f-vec2(0,1)),dot(h2(i+1.),f-1.),u.x),u.y);}
+float fbm(vec2 p){float v=0.,a=.5;mat2 m=mat2(1.6,1.2,-1.2,1.6);for(int i=0;i<5;i++){v+=a*n(p);p=m*p;a*=.5;}return v;}
+float field(vec2 q){
+ float t=T*.035;
+ vec2 a=vec2(fbm(q+vec2(0,t)),fbm(q+vec2(5.2,1.3)-t));
+ vec2 b=vec2(fbm(q+2.2*a+vec2(1.7,9.2)+t*.7),fbm(q+2.2*a+vec2(8.3,2.8)-t*.5));
+ return fbm(q+2.6*b);
+}
+void main(){
+ vec2 uv=gl_FragCoord.xy/R;float asp=R.x/R.y;
+ vec2 q=vec2(uv.x*asp,uv.y);
+ for(int i=0;i<8;i++){
+  vec2 c0=vec2(P[i].x*asp,P[i].y);vec2 d=q-c0;float r2=dot(d,d);
+  float f=exp(-r2*14.);
+  q-=P[i].zw*f*.9;
+  float s=length(P[i].zw)*6.;float c=cos(s*f),sn=sin(s*f);
+  q=c0+mat2(c,-sn,sn,c)*(q-c0);
+ }
+ q*=1.35;
+ float v=field(q);
+ float e=.004;
+ float vx=field(q+vec2(e,0)),vy=field(q+vec2(0,e));
+ vec3 nrm=normalize(vec3((v-vx)/e*.05,(v-vy)/e*.05,1.));
+ float k=v*2.2+.5;
+ vec3 notte=vec3(.043,.043,.29),blu=vec3(.09,.09,.59),cel=vec3(.38,.45,.95),gia=vec3(.96,.9,.09),ros=vec3(.93,.18,.22),bia=vec3(.97,.97,1.);
+ vec3 col=notte;
+ col=mix(col,blu,smoothstep(.15,.42,k));
+ col=mix(col,cel,smoothstep(.55,.63,k)*(1.-smoothstep(.66,.72,k)));
+ col=mix(col,bia,smoothstep(.69,.72,k)*(1.-smoothstep(.74,.78,k)));
+ col=mix(col,gia,smoothstep(.76,.8,k));
+ col=mix(col,ros,smoothstep(.02,-.04,k)*.95);
+ vec3 L=normalize(vec3(-.4,.6,.7));
+ float dif=clamp(dot(nrm,L),0.,1.);
+ float spec=pow(clamp(dot(reflect(-L,nrm),vec3(0,0,1)),0.,1.),28.);
+ col*=.78+.32*dif;
+ col+=spec*.35;
+ col*=1.-.25*length(uv-.5);
+ o=vec4(col,1.);
+}
+</script>
+<script>
+const STORES={{STOREJSON}};
+const I={clock:`{{PiClockBold}}`,x:`{{PiXBold}}`,list:`{{PiListBold}}`};
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+const fine=matchMedia("(pointer:fine)").matches;
+
+/* split words */
+$$(".split").forEach(el=>{let i=0;el.innerHTML=el.textContent.trim().split(/\s+/).map(w=>`<span class="w"><span style="--i:${i++}">${w}</span></span>`).join(" ")});
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.2,rootMargin:"0px 0px -6% 0px"});
+$$(".split,.fade").forEach(el=>{if(el.closest(".hero"))return;io.observe(el)});
+function heroIn(){$("#h1").classList.add("in");setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}
+(function(){
+  const it=$("#intro");let seen=false;try{seen=sessionStorage.getItem("rc-intro")==="1"}catch(e){}
+  if(reduce||seen){it.remove();requestAnimationFrame(()=>setTimeout(heroIn,150));return}
+  document.documentElement.classList.add("intro-on");
+  const T=[];const at=(ms,f)=>T.push(setTimeout(f,ms));let done=false;
+  function end(){if(done)return;done=true;T.forEach(clearTimeout);it.classList.add("s1","s2","s3");document.documentElement.classList.remove("intro-on");setTimeout(heroIn,350);setTimeout(()=>it.remove(),1300);try{sessionStorage.setItem("rc-intro","1")}catch(e){}}
+  at(250,()=>it.classList.add("s1"));
+  at(850,()=>it.classList.add("s2"));
+  at(2200,end);
+  it.addEventListener("click",end);
+})();
+
+/* header */
+const hdr=$("#hdr"),hero=$("#hero"),mbar=$("#mbar"),mb=$(".menu-btn"),panel=$("#panel");let lastY=0;
+function onScroll(){const y=scrollY,hh=hero.offsetHeight-80;
+  hdr.classList.toggle("solid",y>hh);
+  hdr.classList.toggle("hide",y>hh&&y>lastY&&!panel.classList.contains("on"));
+  mbar.classList.toggle("on",y>hero.offsetHeight*.6);lastY=y}
+addEventListener("scroll",onScroll,{passive:true});
+mb.onclick=()=>{const on=panel.classList.toggle("on");hdr.classList.toggle("menu",on);mb.setAttribute("aria-expanded",on);mb.setAttribute("aria-label",on?"Chiudi il menu":"Apri il menu");mb.innerHTML=on?I.x:I.list;document.body.style.overflow=on?"hidden":""};
+panel.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>{if(panel.classList.contains("on"))mb.click()}));
+
+/* button ink follows pointer */
+$$(".btn,.cats a").forEach(b=>b.addEventListener("pointerenter",e=>{const r=b.getBoundingClientRect();b.style.setProperty("--x",e.clientX-r.left+"px");b.style.setProperty("--y",e.clientY-r.top+"px")}));
+
+/* cursor */
+if(fine&&!reduce){const c=$("#cur");let x=innerWidth/2,y=innerHeight/2,cx=x,cy=y;
+  addEventListener("pointermove",e=>{x=e.clientX;y=e.clientY});
+  document.addEventListener("pointerover",e=>c.classList.toggle("big",!!e.target.closest("a,button,label")));
+  (function f(){cx+=(x-cx)*.2;cy+=(y-cy)*.2;c.style.transform=`translate(${cx}px,${cy}px)`;requestAnimationFrame(f)})();}
+
+/* WebGL paint */
+(function(){
+  const cv=$("#paint");const gl=cv.getContext("webgl2",{antialias:false,powerPreference:"high-performance"});
+  if(!gl||reduce){document.documentElement.classList.add("nogl");return}
+  const vs=`#version 300 es
+in vec2 a;void main(){gl_Position=vec4(a,0,1);}`;
+  function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(x));return null}return x}
+  const v=sh(gl.VERTEX_SHADER,vs),f=sh(gl.FRAGMENT_SHADER,$("#fs").textContent.trim());
+  if(!v||!f){document.documentElement.classList.add("nogl");return}
+  const pr=gl.createProgram();gl.attachShader(pr,v);gl.attachShader(pr,f);gl.linkProgram(pr);gl.useProgram(pr);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  const al=gl.getAttribLocation(pr,"a");gl.enableVertexAttribArray(al);gl.vertexAttribPointer(al,2,gl.FLOAT,false,0,0);
+  const uR=gl.getUniformLocation(pr,"R"),uT=gl.getUniformLocation(pr,"T"),uP=gl.getUniformLocation(pr,"P");
+  const N=8,pts=new Float32Array(N*4);let head=0;
+  const scale=innerWidth<700?.5:.6;
+  function size(){const w=cv.clientWidth,h=cv.clientHeight;cv.width=Math.max(2,w*scale|0);cv.height=Math.max(2,h*scale|0);gl.viewport(0,0,cv.width,cv.height)}
+  size();addEventListener("resize",size);
+  let last=null,lastT=0;
+  function push(x,y,dx,dy){pts[head*4]=x;pts[head*4+1]=y;pts[head*4+2]=dx;pts[head*4+3]=dy;head=(head+1)%N}
+  function move(e){const r=cv.getBoundingClientRect();const x=(e.clientX-r.left)/r.width,y=1-(e.clientY-r.top)/r.height;
+    const now=performance.now();if(!last){last=[x,y];lastT=now;return}
+    if(now-lastT>16){let dx=x-last[0],dy=y-last[1];const m=Math.hypot(dx,dy);if(m>.002){const k=Math.min(1,.12/m);push(x,y,dx*k*1.4,dy*k*1.4)}lastT=now;last=[x,y]}}
+  hero.addEventListener("pointermove",move,{passive:true});
+  hero.addEventListener("pointerleave",()=>last=null);
+  hero.addEventListener("pointerdown",e=>{last=null;move(e)});
+  let vis=true;new IntersectionObserver(es=>vis=es[0].isIntersecting).observe(hero);
+  const t0=performance.now();let tick=0;
+  function frame(now){
+    requestAnimationFrame(frame);
+    if(!vis||document.hidden)return;
+    for(let i=0;i<N;i++){pts[i*4+2]*=.975;pts[i*4+3]*=.975}
+    tick++;if(tick%14===0&&!last){const s=now/1000;push(.5+Math.cos(s*.5)*.3,.5+Math.sin(s*.7)*.25,Math.cos(s*.9)*.03,Math.sin(s*1.1)*.03)}
+    gl.uniform2f(uR,cv.width,cv.height);gl.uniform1f(uT,(now-t0)/1000+20.);gl.uniform4fv(uP,pts);
+    gl.drawArrays(gl.TRIANGLES,0,3);
+  }
+  requestAnimationFrame(frame);
+})();
+
+/* can story */
+(function(){
+  const sec=$("#story"),stage=$(".stage"),can=$("#can"),lid=$("#lid"),stream=$("#stream"),fill=$("#pourfill"),top=$("#paintTop"),lip=$("#lip"),lines=$$(".lines p");
+  const cl=(x,a,b)=>Math.min(1,Math.max(0,(x-a)/(b-a)));
+  const ease=t=>1-Math.pow(1-t,3);
+  function upd(p){
+    const enter=ease(cl(p,0,.14)),lidp=ease(cl(p,.18,.36)),tilt=ease(cl(p,.38,.56)),pour=cl(p,.52,.72),flood=ease(cl(p,.7,.95));
+    can.style.transform=`translate(-50%,-50%) translateY(${(1-enter)*24-tilt*6}vh) translateX(${tilt*12}vw) scale(${.82+enter*.18}) rotate(${-tilt*68}deg)`;
+    lid.style.transform=`translate(${lidp*190}px,${-lidp*280}px) rotate(${lidp*85}deg)`;
+    lid.style.opacity=1-cl(p,.31,.38);
+    top.setAttribute("opacity",cl(p,.28,.34));
+    const sr=stage.getBoundingClientRect(),lr=lip.getBoundingClientRect();
+    const x=lr.left-sr.left,y=lr.top-sr.top,H=sr.height,w=Math.max(10,Math.min(34,sr.width*.07));
+    const end=y+(H-y+40)*pour;
+    stream.setAttribute("d",`M${x} ${y} C ${x-26} ${y+30}, ${x-30} ${y+60}, ${x-30} ${Math.max(y+60,end)}`);
+    stream.setAttribute("stroke-width",w);
+    stream.style.opacity=pour>0&&tilt>.85?1-cl(p,.9,.97):0;
+    fill.style.clipPath=`circle(${flood*160}% at ${((x-30)/sr.width*100).toFixed(1)}% 100%)`;
+    can.style.opacity=1-cl(p,.9,.98);
+    lines.forEach(l=>{const[a,b]=l.dataset.r.split(",").map(Number);l.classList.toggle("on",p>=a&&p<b)});
+  }
+  if(reduce){upd(.12);lines[0].classList.add("on");return}
+  const DUR=7000,HOLD=1600;let vis=false,start=null,raf=0;
+  new IntersectionObserver(es=>{vis=es[0].isIntersecting;if(vis&&!raf){start=null;raf=requestAnimationFrame(loop)}},{threshold:.35}).observe(sec);
+  function loop(now){
+    if(!vis||document.hidden){raf=0;return}
+    if(start===null)start=now;
+    const t=now-start;
+    if(t<DUR)upd(t/DUR);
+    else if(t<DUR+HOLD){upd(1);if(t>DUR+HOLD-600)fill.classList.add("out")}
+    else{start=now;fill.classList.remove("out");upd(0)}
+    raf=requestAnimationFrame(loop);
+  }
+  upd(0);
+})();
+
+/* services carousel buttons */
+const svc=$("#svc");
+$("#next").onclick=()=>svc.scrollBy({left:svc.querySelector("article").offsetWidth+22,behavior:"smooth"});
+$("#prev").onclick=()=>svc.scrollBy({left:-(svc.querySelector("article").offsetWidth+22),behavior:"smooth"});
+
+/* 1991 fill */
+const y91=$("#y91");
+io.observe(y91);
+
+/* stores */
+function now(){const p=new Intl.DateTimeFormat("en-GB",{timeZone:"Europe/Rome",weekday:"short",hour:"2-digit",minute:"2-digit",hour12:false}).formatToParts(new Date());const g=k=>p.find(x=>x.type===k).value;return{d:["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].indexOf(g("weekday")),m:(+g("hour")%24)*60+ +g("minute")}}
+const mm=s=>{const[h,m]=s.split(":").map(Number);return h*60+m};
+const slots=(s,d)=>d>=1&&d<=5?s.wk:d===6?s.sat:[];
+const fmt=sl=>sl.length?sl.map(([a,b])=>a.replace(":00","")+"–"+b.replace(":00","")).join(", "):"Chiuso";
+function states(){const{d,m}=now();STORES.forEach(s=>{const sl=slots(s,d),open=sl.some(([a,b])=>m>=mm(a)&&m<mm(b));
+  $$(`[data-open="${s.k}"]`).forEach(el=>{el.classList.toggle("open",open);el.textContent=open?"Aperto ora":"Chiuso ora"});
+  $$(`[data-today="${s.k}"]`).forEach(el=>el.innerHTML=`<span class="ico">${I.clock}</span>Oggi `+fmt(sl))})}
+states();setInterval(states,60000);
+
+/* sheet */
+const sheet=$("#sheet"),sT=$("#sheetT"),sL=$("#sheetL");
+const tel=t=>"tel:+39"+t.replace(/\s/g,"");
+const maps=s=>"https://www.google.com/maps/search/?api=1&query="+encodeURIComponent("Rustichelli Color "+s.addr+" "+s.cap);
+function openSheet(kind){
+  sT.textContent={call:"Chi vuoi chiamare?",wa:"Scrivi su WhatsApp",map:"Dove vuoi andare?"}[kind];
+  sL.innerHTML=STORES.map(s=>kind==="call"?`<a href="${tel(s.tel)}">${s.city}<span>${s.tel}</span></a>`:kind==="wa"?`<a href="${s.wa||"#"}">${s.city}<span>${s.wa?"Apri chat":"In arrivo"}</span></a>`:`<a href="${maps(s)}">${s.city}<span>${s.addr}</span></a>`).join("");
+  sheet.classList.add("on");sheet.querySelector(".x").focus();
+}
+$$("[data-sheet]").forEach(b=>b.onclick=()=>openSheet(b.dataset.sheet));
+$$("[data-close]").forEach(b=>b.onclick=()=>sheet.classList.remove("on"));
+addEventListener("keydown",e=>{if(e.key==="Escape")sheet.classList.remove("on")});
+
+/* form */
+const form=$("#form"),msg=$("#msg");
+form.foto.addEventListener("change",()=>{const n=form.foto.files.length;$("#fileTxt").textContent=n?(n===1?"1 foto aggiunta":n+" foto aggiunte"):"Aggiungi foto del lavoro"});
+form.addEventListener("submit",e=>{e.preventDefault();
+  const bad=[form.nome,form.tel].find(x=>!x.value.trim());
+  if(bad){msg.textContent=bad===form.nome?"Scrivi il tuo nome.":"Lascia un numero di telefono per essere richiamato.";bad.focus();return}
+  if(!form.privacy.checked){msg.textContent="Serve il consenso privacy per inviare la richiesta.";form.privacy.focus();return}
+  /* DA FORNIRE: endpoint di invio */
+  msg.textContent="L'invio non è ancora attivo: chiama il punto vendita per ora.";});
+</script>
+</body>
+</html>

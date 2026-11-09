@@ -1,0 +1,32 @@
+/* loops */
+.l-wall{background:#F4F4F8}
+.l-wall .paint{animation:paint 5s cubic-bezier(.5,0,.5,1) infinite;transform-origin:top}
+.l-wall .roller{animation:roll 5s cubic-bezier(.5,0,.5,1) infinite}
+@keyframes paint{0%,8%{transform:scaleY(0)}55%,80%{transform:scaleY(1)}95%,100%{transform:scaleY(1);opacity:0}}
+@keyframes roll{0%,8%{transform:translateY(0)}55%{transform:translateY(150px)}62%,100%{transform:translateY(150px);opacity:0}}
+.l-tint{background:#1E1E7A}
+.l-tint .drop{animation:drop 2.4s cubic-bezier(.5,0,1,1) infinite}
+.l-tint .drop:nth-of-type(2){animation-delay:.8s}
+.l-tint .drop:nth-of-type(3){animation-delay:1.6s}
+@keyframes drop{0%{transform:translateY(0) scale(.6);opacity:0}10%{opacity:1}70%{transform:translateY(120px) scale(1);opacity:1}75%,100%{transform:translateY(120px) scale(1);opacity:0}}
+.l-tint .fill{animation:fill 7.2s linear infinite;transform-origin:bottom}
+@keyframes fill{0%{transform:scaleY(.25)}90%{transform:scaleY(.95)}100%{transform:scaleY(.25)}}
+.l-tint .can{animation:shake 7.2s infinite}
+@keyframes shake{0%,90%{transform:none}92%{transform:translateX(-3px)}94%{transform:translateX(3px)}96%{transform:translateX(-3px)}98%{transform:translateX(2px)}100%{transform:none}}
+.l-sw{background:#FEFBDD}
+.l-sw .s{transform-origin:200px 230px;animation:sw 5s cubic-bezier(.3,.7,.2,1) infinite}
+.l-sw .s1{--a:-26deg}.l-sw .s2{--a:-9deg}.l-sw .s3{--a:9deg}.l-sw .s4{--a:26deg}
+@keyframes sw{0%,10%{transform:rotate(0)}40%,75%{transform:rotate(var(--a))}100%{transform:rotate(0)}}
+.l-brush{background:#FDE6E7}
+.l-brush .stroke{stroke-dasharray:620;stroke-dashoffset:620;animation:stroke 4.5s cubic-bezier(.6,0,.3,1) infinite}
+.l-brush .brush{offset-path:path("M40 170 C 110 80, 160 220, 230 130 S 330 60, 370 120");animation:brush 4.5s cubic-bezier(.6,0,.3,1) infinite}
+@keyframes stroke{0%{stroke-dashoffset:620}55%,85%{stroke-dashoffset:0}100%{stroke-dashoffset:0;opacity:0}}
+@keyframes brush{0%{offset-distance:0%}55%{offset-distance:100%}85%,100%{offset-distance:100%;opacity:0}}
+.l-van{background:#E6E7F5}
+.l-van .road{animation:road .8s linear infinite}
+@keyframes road{to{transform:translateX(-60px)}}
+.l-van .van{animation:van 5s cubic-bezier(.5,0,.5,1) infinite}
+@keyframes van{0%{transform:translateX(-260px)}40%,60%{transform:translateX(0)}100%{transform:translateX(320px)}}
+.l-van .van .bob{animation:bob .35s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-2px)}}
+

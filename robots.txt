@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://michtru.github.io/rustichelli-color/sitemap.xml

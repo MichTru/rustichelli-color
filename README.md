@@ -2,7 +2,9 @@
 
 Sito vetrina di Rustichelli Color Srl, colorificio a Lugo, Faenza, Cervia e Riccione.
 
-Il sito è statico: basta `index.html` con la cartella `assets/`. Si pubblica con GitHub Pages dal branch `main`.
+Il sito è statico e multipagina (home, servizi, prodotti, punti vendita con una pagina per negozio, azienda, preventivo, privacy). Si pubblica con GitHub Pages dal branch `main`, cartella root.
+
+Le pagine sono generate da `src/build2.py` a partire dai file in `src/`. Se modifichi direttamente gli HTML, tieni presente che una nuova generazione li sovrascrive.
 
 ## Da completare
 
