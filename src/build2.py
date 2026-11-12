@@ -192,13 +192,13 @@ def fill(s):
     return s
 
 # ---------- CSS ----------
-EXTRA_CSS = open(os.path.join(D, "inner.css")).read() + open(os.path.join(D, "hero3.css")).read()
+EXTRA_CSS = open(os.path.join(D, "inner.css")).read() + open(os.path.join(D, "hero4.css")).read()
 open(os.path.join(OUT, "style.css"), "w").write(fill(CSS) + EXTRA_CSS)
 
 # ---------- JS ----------
 js = fill(JS)
 js = js.replace('$("#fs").textContent.trim()', "FS")
-js = js.replace('function heroIn(){$("#h1").classList.add("in");setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}', 'function heroIn(){if(!$("#h1"))return;$("#h1").classList.add("in");document.dispatchEvent(new Event("hero-in"));setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},$("#paintTitle")?1700:450)}')
+js = js.replace('function heroIn(){$("#h1").classList.add("in");setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}', 'function heroIn(){if(!$("#h1"))return;$("#h1").classList.add("in");document.dispatchEvent(new Event("hero-in"));setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}')
 assert 'new Event("hero-in")' in js
 js = js.replace('const it=$("#intro");let seen=false;', 'const it=$("#intro");if(!it){heroIn();return}let seen=false;try{if(sessionStorage.getItem("rc-nav")==="1")seen=true}catch(e){}')
 js = js.replace('const hdr=$("#hdr"),hero=$("#hero"),', 'const hdr=$("#hdr"),hero=$("#hero")||$("#phead"),')
@@ -213,7 +213,7 @@ js = js.replace('const form=$("#form"),msg=$("#msg");\nform.foto', 'const form=$
 assert js.rstrip().endswith('});'), js[-200:]
 js = js.rstrip() + "\n}\n"
 js = "const FS=`" + SHADER + "`;\n" + "const CATN=" + json.dumps({k: n for k, n, _, _ in CATS}, ensure_ascii=False) + ";\n" + js
-js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "paint.js")).read()
+js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "liquid.js")).read()
 for chk in ['if(!cv)return', 'if(!sec)return', 'if(y91)', 'if(form){', 'if(svc&&', 'if(!it){']:
     assert chk in js, chk
 open(os.path.join(OUT, "app.js"), "w").write(js)

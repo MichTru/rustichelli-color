@@ -54,7 +54,7 @@ const fine=matchMedia("(pointer:fine)").matches;
 $$(".split").forEach(el=>{let i=0;el.innerHTML=el.textContent.trim().split(/\s+/).map(w=>`<span class="w"><span style="--i:${i++}">${w}</span></span>`).join(" ")});
 const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.2,rootMargin:"0px 0px -6% 0px"});
 $$(".split,.fade").forEach(el=>{if(el.closest(".hero"))return;io.observe(el)});
-function heroIn(){if(!$("#h1"))return;$("#h1").classList.add("in");document.dispatchEvent(new Event("hero-in"));setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},$("#paintTitle")?1700:450)}
+function heroIn(){if(!$("#h1"))return;$("#h1").classList.add("in");document.dispatchEvent(new Event("hero-in"));setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}
 (function(){
   const it=$("#intro");if(!it){heroIn();return}let seen=false;try{if(sessionStorage.getItem("rc-nav")==="1")seen=true}catch(e){}try{seen=sessionStorage.getItem("rc-intro")==="1"}catch(e){}
   if(reduce||seen){it.remove();requestAnimationFrame(()=>setTimeout(heroIn,150));return}
@@ -230,123 +230,120 @@ form.addEventListener("submit",e=>{e.preventDefault();
   addEventListener("pageshow",e=>{if(e.persisted){c.classList.remove("down");c.classList.add("lift");root.classList.remove("nav-in")}});
 })();
 
-/* hero: tipografia dipinta */
+/* hero: logo liquefatto */
 (function(){
-  const host=$("#paintTitle");if(!host)return;
-  const cv=host.querySelector("canvas"),g=cv.getContext("2d");
-  if(!g){document.documentElement.classList.add("nopaint");return}
-  const FONT=s=>`italic 900 ${s}px Archivo, "Arial Black", sans-serif`;
-  const C={blu:"#171796",bluL:"#4B4BE6",bluD:"#07074A",gia:"#F5E617",giaL:"#FFF59A",giaD:"#C9B400",ros:"#ED2E38",rosD:"#B3121C",rosL:"#FF7A80"};
-  const mk=(w,h)=>{const c=document.createElement("canvas");c.width=w;c.height=h;return c};
+  const cv=$("#melt");if(!cv)return;
+  const heroEl=$("#hero");
+  const gl=cv.getContext("webgl2",{premultipliedAlpha:true,alpha:true,antialias:false});
+  if(!gl){document.documentElement.classList.add("nomelt");return}
+  const MAXD=16;
+  const VS=`#version 300 es
+in vec2 a;out vec2 uv;void main(){uv=a*.5+.5;gl_Position=vec4(a,0,1);}`;
+  const FS=`#version 300 es
+precision highp float;
+in vec2 uv;out vec4 o;
+uniform sampler2D T;uniform float tm,asp,edge;uniform vec4 P,box;
+uniform vec4 D[${MAXD}];uniform vec3 DC[${MAXD}];uniform int ND;
+float h(float n){return fract(sin(n*127.1)*43758.5453);}
+float vn(vec2 p){vec2 i=floor(p),f=fract(p);f=f*f*(3.-2.*f);float a=h(i.x+i.y*57.),b=h(i.x+1.+i.y*57.),c=h(i.x+(i.y+1.)*57.),d=h(i.x+1.+(i.y+1.)*57.);return mix(mix(a,b,f.x),mix(c,d,f.x),f.y);}
+float smin(float a,float b,float k){float hh=clamp(.5+.5*(b-a)/k,0.,1.);return mix(b,a,hh)-k*hh*(1.-hh);}
+float sdSeg(vec2 p,vec2 a,vec2 b,float r){vec2 pa=p-a,ba=b-a;float hh=clamp(dot(pa,ba)/dot(ba,ba),0.,1.);return length(pa-ba*hh)-r;}
+vec4 tex(vec2 q){return(q.x<0.||q.x>1.||q.y<0.||q.y>1.)?vec4(0):texture(T,q);}
+void main(){
+  vec2 q=(uv-box.xy)/box.zw;
+  float t=tm*.22;
+  q+=vec2(vn(q*vec2(5.,2.5)+t)-.5,vn(q*vec2(4.,3.)-t+9.)-.5)*.004;
+  vec2 pp=(P.xy-box.xy)/box.zw;vec2 d=q-pp;d.x*=asp;
+  float f=exp(-dot(d,d)*30.)*P.z;float an=f*1.1;float c=cos(an),s=sin(an);
+  q=pp+mat2(c,-s,s,c)*(q-pp);q.y-=f*.04;
+  vec4 tx=tex(q);
+  float sdL=(.5-tx.a)*edge;
+  vec2 p=vec2(q.x*asp,q.y);
+  float sdD=1e3;vec3 dcol=vec3(0);
+  for(int i=0;i<${MAXD};i++){if(i>=ND)break;vec4 k=D[i];if(k.z<=0.)continue;
+    float r=k.w,L=k.z;
+    vec2 A=vec2(k.x,k.y+r*1.4),B=vec2(k.x,k.y-L);
+    float tt=clamp((A.y-p.y)/max(A.y-B.y,.001),0.,1.);
+    float sd=sdSeg(p,A,B,r*(1.-.22*tt));
+    sd=smin(sd,length(p-B)-r*1.2*min(1.,L/(r*2.5)+.35),r*.7);
+    if(sd<sdD){sdD=sd;dcol=DC[i];}
+  }
+  float sd=smin(sdL,sdD,.03);
+  float fw=max(fwidth(sd),1e-5);
+  float a=clamp(.5-sd/fw,0.,1.);
+  if(a<=0.){o=vec4(0);return;}
+  vec3 base=tx.a>.02?tx.rgb/tx.a:dcol;
+  float wD=smoothstep(.01,-.01,sdD-sdL);
+  if(tx.a<.9&&wD<.5){vec4 deep=tex(q+vec2(0.,.015));if(deep.a>.9)base=mix(deep.rgb/deep.a,base,.2);}
+  base=mix(base,dcol,wD);
+  float hgt=smoothstep(0.,-.04,sd);
+  vec3 n=normalize(vec3(-dFdx(hgt),-dFdy(hgt),fw*1.6));
+  vec3 L=normalize(vec3(-.45,.6,.8));
+  float dif=max(dot(n,L),0.),spec=pow(max(dot(reflect(-L,n),vec3(0,0,1)),0.),36.);
+  vec3 col=base*(.84+.2*dif)+spec*.42;
+  o=vec4(col*a,a);
+}`;
+  function sh(t,s){const x=gl.createShader(t);gl.shaderSource(x,s);gl.compileShader(x);if(!gl.getShaderParameter(x,gl.COMPILE_STATUS)){console.error(gl.getShaderInfoLog(x));return null}return x}
+  const v=sh(gl.VERTEX_SHADER,VS),f=sh(gl.FRAGMENT_SHADER,FS);if(!v||!f){document.documentElement.classList.add("nomelt");return}
+  const pr=gl.createProgram();gl.attachShader(pr,v);gl.attachShader(pr,f);gl.linkProgram(pr);gl.useProgram(pr);
+  const b=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,b);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW);
+  gl.enableVertexAttribArray(0);gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+  const U={};["T","tm","asp","edge","P","box","D","DC","ND"].forEach(k=>U[k]=gl.getUniformLocation(pr,k));
+  const tex=gl.createTexture();let ready=false,iw=1,ih=1,drips=[];
   function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
-  function noise1(seed,k){const r=rng(seed),v=Array.from({length:k+2},()=>r()*2-1);return t=>{const x=Math.min(.9999,Math.max(0,t))*k,i=x|0,f=x-i,u=f*f*(3-2*f);return v[i]*(1-u)+v[i+1]*u}}
-  function path(xa,ya,xb,yb,bend,n){const p=[];for(let i=0;i<=n;i++){const t=i/n;p.push([xa+(xb-xa)*t,ya+(yb-ya)*t-Math.sin(t*Math.PI)*bend])}return p}
-  function frameAt(P,i){const n=P.length-1,a=P[Math.max(0,i-1)],c=P[Math.min(n,i+1)];let tx=c[0]-a[0],ty=c[1]-a[1];const l=Math.hypot(tx,ty)||1;return[tx/l,ty/l]}
-  function along(ctx,P,o,t0,t1,wob,ph){const n=P.length-1;let st=false;for(let i=Math.floor(t0*n);i<=Math.floor(t1*n);i++){const[tx,ty]=frameAt(P,i),oo=o+Math.sin(i/n*7+ph)*wob,x=P[i][0]-ty*oo,y=P[i][1]+tx*oo;st?ctx.lineTo(x,y):(ctx.moveTo(x,y),st=true)}}
-
-  function brushPoly(P,w,seed,tEnd){
-    const n=P.length-1,nl=noise1(seed,9),nr=noise1(seed+1,9),hl=noise1(seed+2,70),hr=noise1(seed+3,70),L=[],R=[];
-    const last=Math.floor(tEnd*n);
-    for(let i=0;i<=last;i++){const t=i/n,[tx,ty]=frameAt(P,i);
-      const tap=Math.min(1,.84+t*5)*(t>tEnd-.2?Math.max(.3,1-(t-(tEnd-.2))/.2*.7):1);
-      const a=w/2*tap*(1+nl(t)*.08+hl(t)*.03),b=w/2*tap*(1+nr(t)*.08+hr(t)*.03);
-      L.push([P[i][0]+ty*a,P[i][1]-tx*a]);R.push([P[i][0]-ty*b,P[i][1]+tx*b])}
-    const p=new Path2D();p.moveTo(L[0][0],L[0][1]);
-    for(const q of L)p.lineTo(q[0],q[1]);for(let i=R.length-1;i>=0;i--)p.lineTo(R[i][0],R[i][1]);
-    const[sx,sy]=P[0],[tx,ty]=frameAt(P,0),r=w/2*.84,cn=noise1(seed+5,8);
-    for(let k=1;k<24;k++){const a=k/24*Math.PI,rr=r*(1+cn(k/24)*.06);p.lineTo(sx+ty*(-Math.cos(a))*rr-tx*Math.sin(a)*rr*.55,sy-tx*(-Math.cos(a))*rr-ty*Math.sin(a)*rr*.55)}
-    p.closePath();return p;
+  const img=new Image();
+  img.onload=()=>{
+    const pad=24;iw=img.naturalWidth+pad*2;ih=img.naturalHeight+pad*2;
+    const c=document.createElement("canvas");c.width=iw;c.height=ih;const x=c.getContext("2d");x.drawImage(img,pad,pad);
+    const px=x.getImageData(0,0,iw,ih).data,A=(X,Y)=>px[(Y*iw+X)*4+3],RGB=(X,Y)=>{const i=(Y*iw+X)*4,a=Math.max(1,px[i+3])/255;return[px[i]/255/a,px[i+1]/255/a,px[i+2]/255/a].map(v=>Math.min(1,v))};
+    const bottom=X=>{for(let Y=ih-1;Y>=0;Y--)if(A(X,Y)>235)return Y;return -1};
+    const cand=[];
+    for(let X=Math.round(iw*.05);X<iw*.96;X+=3){const y0=bottom(X),yl=bottom(X-8),yr=bottom(X+8);if(y0<0||yl<0||yr<0)continue;
+      if(Math.abs(yl-y0)>ih*.02||Math.abs(yr-y0)>ih*.02)continue;
+      const ys=Math.max(0,y0-Math.round(ih*.035));if(A(X,ys)<240)continue;
+      const cc=RGB(X,ys);let col=null;
+      if(cc[2]>.4&&cc[0]<.35&&cc[1]<.35)col=[.09,.09,.59];else if(cc[0]>.85&&cc[1]>.78&&cc[2]<.4)col=[.96,.9,.09];
+      if(!col)continue;
+      cand.push({X,Y:y0,col})}
+    const r=rng(1991),pick=[];
+    for(const k of cand.sort(()=>r()-.5)){if(pick.length>=9)break;if(pick.every(p=>Math.abs(p.X-k.X)>iw*.07))pick.push(k)}
+    const as=iw/ih;
+    drips=pick.map(k=>({x:k.X/iw*as,yb:1-k.Y/ih,L:.12+Math.pow(r(),1.5)*.42,r:.03+r()*.032,col:k.col,del:r()*1.6,sp:.7+r()*.6}));
+    gl.bindTexture(gl.TEXTURE_2D,tex);gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,true);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);
+    gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,c);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);
+    ready=true;size();heroEl.classList.add("melt-on")};
+  img.src="assets/logo-hd.png";
+  let box=[0,0,1,1];
+  function size(){const dpr=Math.min(2,devicePixelRatio||1),rc=cv.getBoundingClientRect();cv.width=Math.max(2,rc.width*dpr|0);cv.height=Math.max(2,rc.height*dpr|0);gl.viewport(0,0,cv.width,cv.height);
+    const as=iw/ih,W=cv.width,H=cv.height;let bw=W*.98,bh=bw/as;if(bh>H*.6){bh=H*.6;bw=bh*as}
+    box=[(1-bw/W)/2,1-(H*.02+bh)/H,bw/W,bh/H]}
+  addEventListener("resize",size);
+  let px=-9,py=-9,pz=0,tx=-9,ty=-9,on=0;
+  const mv=e=>{const rc=cv.getBoundingClientRect();tx=(e.clientX-rc.left)/rc.width;ty=1-(e.clientY-rc.top)/rc.height;on=1};
+  cv.addEventListener("pointermove",mv,{passive:true});cv.addEventListener("pointerdown",mv,{passive:true});
+  cv.addEventListener("pointerleave",()=>on=0);cv.addEventListener("pointerup",e=>{if(e.pointerType!=="mouse")on=0});
+  let vis=true;new IntersectionObserver(es=>vis=es[0].isIntersecting).observe(heroEl);
+  let t0=null,startAt=null;
+  document.addEventListener("hero-in",()=>{startAt=performance.now()});
+  if($("#h1")&&$("#h1").classList.contains("in"))startAt=performance.now();
+  const Dv=new Float32Array(MAXD*4),Cv=new Float32Array(MAXD*3);
+  function frame(now){
+    requestAnimationFrame(frame);
+    if(!ready||!vis||document.hidden)return;
+    if(t0===null)t0=now;
+    const tm=(now-t0)/1000,gs=startAt===null?0:(now-startAt)/1000;
+    drips.forEach((d,i)=>{let g=reduce?1:Math.min(1,Math.max(0,(gs-d.del)/(4.5*d.sp)));g=1-Math.pow(1-g,2.4);
+      const creep=reduce?0:Math.min(.12,Math.max(0,gs-d.del-4.5*d.sp)*.004);
+      Dv[i*4]=d.x;Dv[i*4+1]=d.yb;Dv[i*4+2]=g>0?d.L*g+creep:0;Dv[i*4+3]=d.r;Cv[i*3]=d.col[0];Cv[i*3+1]=d.col[1];Cv[i*3+2]=d.col[2]});
+    px+=(tx-px)*.12;py+=(ty-py)*.12;pz+=((on?1:0)-pz)*.06;
+    gl.clearColor(0,0,0,0);gl.clear(gl.COLOR_BUFFER_BIT);
+    gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,tex);gl.uniform1i(U.T,0);
+    gl.uniform1f(U.tm,tm);gl.uniform1f(U.asp,iw/ih);gl.uniform1f(U.edge,10/ih);
+    gl.uniform4f(U.P,px,py,pz,0);gl.uniform4f(U.box,box[0],box[1],box[2],box[3]);
+    gl.uniform4fv(U.D,Dv);gl.uniform3fv(U.DC,Cv);gl.uniform1i(U.ND,drips.length);
+    gl.drawArrays(gl.TRIANGLES,0,3);
   }
-  function streaks(ctx,P,w,seed,cols,count,aMin,aMax,thMin,thMax,tA,tB){
-    const r=rng(seed);ctx.lineCap="round";
-    for(let k=0;k<count;k++){const o=(r()-.5)*w,s=tA+r()*.25*(tB-tA),e=tB-r()*.3*(tB-tA);
-      ctx.beginPath();along(ctx,P,o,s,e,w*.006,r()*6);ctx.strokeStyle=cols[(r()*cols.length)|0];ctx.globalAlpha=aMin+r()*(aMax-aMin);ctx.lineWidth=thMin+r()*(thMax-thMin);ctx.stroke()}
-    ctx.globalAlpha=1;
-  }
-  function revealer(P,w,seed){const r=rng(seed),N=70,bs=[];for(let b=0;b<N;b++){const u=b/(N-1)-.5;bs.push({o:u*w*1.04,th:w/N*3.2,lag:r()*.07+Math.abs(u)*.06})}return{P,bs}}
-  function reveal(ctx,R,p){
-    const W=ctx.canvas.width,H=ctx.canvas.height;ctx.clearRect(0,0,W,H);if(p<=0)return;
-    if(p>=1){ctx.fillStyle="#000";ctx.fillRect(0,0,W,H);return}
-    ctx.strokeStyle="#000";ctx.lineCap="round";
-    for(const b of R.bs){const e=p*1.13-b.lag;if(e<=0)continue;ctx.beginPath();along(ctx,R.P,b.o,0,Math.min(1,e),0,0);ctx.lineWidth=b.th;ctx.stroke()}
-  }
-
-  let dpr,lines,layers,buf;
-  function build(){
-    dpr=Math.min(2.5,devicePixelRatio||1);
-    const cw=host.clientWidth,mob=cw<600;
-    lines=mob?["Il","colore","giusto"]:["Il colore","giusto"];
-    g.font=FONT(100);
-    const widest=Math.max(...lines.map((l,i)=>g.measureText(l).width+(i===lines.length-1?52:0)));
-    const fs=Math.min(cw*.9/(widest/100),innerHeight*(mob?.19:.32),270);
-    const lh=fs*.9,Hc=Math.round(lh*lines.length+fs*.46);
-    cv.width=Math.round(cw*dpr);cv.height=Math.round(Hc*dpr);cv.style.height=Hc+"px";
-    const F=fs*dpr,LH=lh*dpr,x0=F*.1,W=cv.width,H=cv.height;
-    layers=[];
-    lines.forEach((txt,i)=>{
-      const base=F*.86+i*LH,c=mk(W,H),x=c.getContext("2d");x.font=FONT(F);const tw=x.measureText(txt).width,t0=i*640;
-      const P=path(x0-F*.08,base-F*.3,x0+tw+F*.1,base-F*.33,F*.02,220);
-      const art=mk(W,H),a=art.getContext("2d");
-      a.fillStyle=C.blu;a.fillRect(0,0,W,H);
-      streaks(a,P,F*1.1,31+i,[C.bluL,C.bluL,C.bluD],Math.round(F*1.1/dpr),.05,.17,.5*dpr,2*dpr,0,1);
-      const gl=a.createLinearGradient(0,base-F*.8,0,base+F*.2);gl.addColorStop(0,"rgba(255,255,255,.18)");gl.addColorStop(.4,"rgba(255,255,255,0)");gl.addColorStop(1,"rgba(0,0,40,.14)");a.fillStyle=gl;a.fillRect(0,0,W,H);
-      x.fillText(txt,x0,base);x.globalCompositeOperation="source-in";x.drawImage(art,0,0);x.globalCompositeOperation="source-over";
-      if(i===lines.length-1){
-        const swW=F*.46,SP=path(x0-F*.08,base-F*.04,x0+tw+F*.66,base-F*.2,F*.05,260);
-        const s=mk(W,H),sx=s.getContext("2d"),poly=brushPoly(SP,swW,7,.86);
-        sx.save();sx.clip(poly);
-        const yg=sx.createLinearGradient(0,base-F*.36,0,base+F*.18);yg.addColorStop(0,C.giaL);yg.addColorStop(.32,C.gia);yg.addColorStop(1,C.giaD);sx.fillStyle=yg;sx.fillRect(0,0,W,H);
-        streaks(sx,SP,swW,13,[C.giaL,C.giaD,"#ffffff"],Math.round(swW/dpr*1.1),.07,.28,.5*dpr,2.2*dpr,0,.9);
-        sx.restore();
-        const rr=rng(99),nn=SP.length-1;sx.lineCap="round";
-        for(let k=0;k<110;k++){const o=(rr()-.5)*swW*.6,e=.88+rr()*.12,ph=rr()*9;sx.beginPath();let st=false;
-          for(let j=Math.floor(.76*nn);j<=Math.floor(e*nn);j++){if(j/nn>.84&&Math.sin(j*.55+ph)>.86-((j/nn)-.84)*3){st=false;continue}const[tx,ty]=frameAt(SP,j),X=SP[j][0]-ty*o,Y=SP[j][1]+tx*o;st?sx.lineTo(X,Y):(sx.moveTo(X,Y),st=true)}
-          sx.strokeStyle=rr()<.72?C.gia:C.giaD;sx.globalAlpha=.6+rr()*.4;sx.lineWidth=(.7+rr()*2.3)*dpr;sx.stroke()}
-        sx.globalAlpha=1;
-        layers.push({kind:"img",img:s,R:revealer(SP,swW*1.6,77),t0:t0-120,dur:950});
-        const dr=rng(5),drops=[.2,.45,.69].map((u,k)=>{const j=Math.floor(u*nn),[tx,ty]=frameAt(SP,j);return{x:SP[j][0]-ty*swW*.4,y:SP[j][1]+tx*swW*.4,len:F*(.09+dr()*.16),w:F*(.045+dr()*.02),d:k*170}});
-        layers.push({kind:"drips",drops,t0:t0+760,dur:1300});
-        layers.push({kind:"img",img:c,R:revealer(P,F*1.2,90+i),t0,dur:900});
-        layers.push({kind:"dot",x:x0+tw+F*.2,y:base-F*.1,r:F*.1,seed:3,t0:t0+880,dur:420});
-      }else layers.push({kind:"img",img:c,R:revealer(P,F*1.2,90+i),t0,dur:900});
-    });
-    buf={mask:mk(W,H),tmp:mk(W,H)};
-  }
-  function dab(ctx,x,y,r,seed,s){
-    const nz=noise1(seed,14);ctx.save();ctx.translate(x,y);ctx.scale(s,s);
-    ctx.beginPath();for(let k=0;k<=120;k++){const a=k/120*Math.PI*2,R=r*(1+nz(k/120)*.12);k?ctx.lineTo(Math.cos(a)*R,Math.sin(a)*R*.94):ctx.moveTo(Math.cos(a)*R,Math.sin(a)*R*.94)}ctx.closePath();
-    const gr=ctx.createRadialGradient(-r*.35,-r*.4,r*.05,0,0,r*1.15);gr.addColorStop(0,'#F4535B');gr.addColorStop(.5,C.ros);gr.addColorStop(1,'#D4202B');ctx.fillStyle=gr;ctx.fill();
-    ctx.fillStyle="rgba(255,255,255,.28)";ctx.beginPath();ctx.ellipse(-r*.32,-r*.4,r*.2,r*.08,-.6,0,Math.PI*2);ctx.fill();
-    const sp=rng(seed+9);ctx.fillStyle=C.ros;for(let k=0;k<8;k++){const a=sp()*Math.PI*2,d=r*(1.35+sp()*.9),q=r*(.035+sp()*.08);ctx.beginPath();ctx.arc(Math.cos(a)*d,Math.sin(a)*d,q,0,Math.PI*2);ctx.fill()}
-    ctx.restore();
-  }
-  function drip(ctx,d,p){
-    const L=d.len*p,w=d.w;if(L<=0)return;
-    const gr=ctx.createLinearGradient(d.x-w,0,d.x+w,0);gr.addColorStop(0,C.giaD);gr.addColorStop(.38,C.gia);gr.addColorStop(1,C.giaD);ctx.fillStyle=gr;
-    ctx.beginPath();ctx.moveTo(d.x-w*1.1,d.y-w*.8);ctx.bezierCurveTo(d.x-w*.5,d.y,d.x-w*.42,d.y+L*.65,d.x-w*.5,d.y+L);
-    ctx.arc(d.x,d.y+L,w*.6,Math.PI,0,true);ctx.bezierCurveTo(d.x+w*.42,d.y+L*.65,d.x+w*.5,d.y,d.x+w*1.1,d.y-w*.8);ctx.closePath();ctx.fill();
-    ctx.fillStyle="rgba(255,255,255,.6)";ctx.beginPath();ctx.ellipse(d.x-w*.2,d.y+L-w*.1,w*.13,w*.2,0,0,Math.PI*2);ctx.fill();
-  }
-  const ease=t=>t<.5?2*t*t:1-Math.pow(-2*t+2,2)/2,back=t=>{const c=1.9;return 1+(c+1)*Math.pow(t-1,3)+c*Math.pow(t-1,2)};
-  function draw(T){
-    const W=cv.width,H=cv.height,m=buf.mask.getContext("2d"),tx=buf.tmp.getContext("2d");
-    g.clearRect(0,0,W,H);
-    for(const L of layers){
-      const p=Math.min(1,Math.max(0,(T-L.t0)/L.dur));if(p<=0)continue;
-      if(L.kind==="img"){
-        if(p>=1){g.drawImage(L.img,0,0);continue}
-        reveal(m,L.R,ease(p));tx.clearRect(0,0,W,H);tx.drawImage(L.img,0,0);tx.globalCompositeOperation="destination-in";tx.drawImage(buf.mask,0,0);tx.globalCompositeOperation="source-over";g.drawImage(buf.tmp,0,0);
-      }else if(L.kind==="drips"){L.drops.forEach(d=>{const q=Math.min(1,Math.max(0,(T-L.t0-d.d)/L.dur));drip(g,d,1-Math.pow(1-q,2.2))})}
-      else dab(g,L.x,L.y,L.r,L.seed,Math.max(.01,back(p)));
-    }
-  }
-  let started=false,t0=null;
-  function play(){host.classList.add("ready");const END=Math.max(...layers.map(l=>l.t0+l.dur+(l.drops?400:0)))+60;
-    if(reduce){draw(1e6);return}
-    const tick=t=>{if(t0===null)t0=t;const T=t-t0;draw(T);if(T<END)requestAnimationFrame(tick)};requestAnimationFrame(tick)}
-  function begin(){if(started)return;started=true;const go=()=>{build();play()};
-    (document.fonts?Promise.race([document.fonts.load(FONT(120)).then(()=>document.fonts.ready),new Promise(r=>setTimeout(r,2500))]):Promise.resolve()).then(go,go)}
-  document.addEventListener("hero-in",begin);
-  if($("#h1")&&$("#h1").classList.contains("in"))begin();
-  let rt,lw=host.clientWidth;addEventListener("resize",()=>{clearTimeout(rt);rt=setTimeout(()=>{if(!started||host.clientWidth===lw)return;lw=host.clientWidth;build();draw(1e6)},180)});
+  requestAnimationFrame(frame);
 })();
