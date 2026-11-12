@@ -4,7 +4,8 @@
 .limg{position:relative;width:100%;height:calc(100svh - 74px - 190px);min-height:420px;overflow:hidden;background:#fff}
 .limg img,.limg canvas{position:absolute;inset:0;width:100%;height:100%}
 .limg img{object-fit:cover;object-position:50% 45%}
-.limg canvas{opacity:0;transition:opacity .6s;cursor:crosshair;touch-action:pan-y}
+.limg canvas{opacity:0;transition:opacity .6s;touch-action:pan-y}
+.limg img{transform:scale(1.06)}
 .limg.live canvas{opacity:1}
 .limg:after{content:"";position:absolute;left:0;right:0;bottom:0;height:60px;background:linear-gradient(rgba(255,255,255,0),#fff);pointer-events:none}
 .hero5 .hband{display:flex;justify-content:space-between;align-items:flex-end;gap:22px 40px;flex-wrap:wrap;padding-top:18px;padding-bottom:46px}
@@ -12,7 +13,8 @@
 .hero5 .lead{color:var(--ink2);margin-top:12px;max-width:32em}
 .hero5 .btn.ink{margin-right:0}
 .home .aud{padding-top:110px}
-@media (max-width:1000px){.limg{height:auto;min-height:0;aspect-ratio:1672/941}}
+@media (max-width:1000px){.limg{height:auto;min-height:0;aspect-ratio:16/10}}
+@media (max-width:600px){.limg{aspect-ratio:3/2}.limg img{transform:scale(1.03)}}
 @media (max-width:600px){
   .hero5{padding-top:64px}
   .hero5 .hband{padding-top:6px;padding-bottom:40px}

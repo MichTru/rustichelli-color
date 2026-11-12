@@ -213,7 +213,7 @@ js = js.replace('const form=$("#form"),msg=$("#msg");\nform.foto', 'const form=$
 assert js.rstrip().endswith('});'), js[-200:]
 js = js.rstrip() + "\n}\n"
 js = "const FS=`" + SHADER + "`;\n" + "const CATN=" + json.dumps({k: n for k, n, _, _ in CATS}, ensure_ascii=False) + ";\n" + js
-js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "heroimg.js")).read()
+js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "hero3d.js")).read()
 for chk in ['if(!cv)return', 'if(!sec)return', 'if(y91)', 'if(form){', 'if(svc&&', 'if(!it){']:
     assert chk in js, chk
 open(os.path.join(OUT, "app.js"), "w").write(js)
