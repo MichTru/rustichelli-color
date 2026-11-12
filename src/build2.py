@@ -192,7 +192,7 @@ def fill(s):
     return s
 
 # ---------- CSS ----------
-EXTRA_CSS = open(os.path.join(D, "inner.css")).read() + open(os.path.join(D, "hero5.css")).read()
+EXTRA_CSS = open(os.path.join(D, "inner.css")).read() + open(os.path.join(D, "hero5.css")).read() + open(os.path.join(D, "products.css")).read()
 open(os.path.join(OUT, "style.css"), "w").write(fill(CSS) + EXTRA_CSS)
 
 # ---------- JS ----------
@@ -213,7 +213,7 @@ js = js.replace('const form=$("#form"),msg=$("#msg");\nform.foto', 'const form=$
 assert js.rstrip().endswith('});'), js[-200:]
 js = js.rstrip() + "\n}\n"
 js = "const FS=`" + SHADER + "`;\n" + "const CATN=" + json.dumps({k: n for k, n, _, _ in CATS}, ensure_ascii=False) + ";\n" + js
-js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "hero3d.js")).read()
+js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "hero3d.js")).read() + open(os.path.join(D, "products.js")).read()
 for chk in ['if(!cv)return', 'if(!sec)return', 'if(y91)', 'if(form){', 'if(svc&&', 'if(!it){']:
     assert chk in js, chk
 open(os.path.join(OUT, "app.js"), "w").write(js)
@@ -388,3 +388,5 @@ open(os.path.join(OUT, "robots.txt"), "w").write(f"User-agent: *\nAllow: /\nSite
 open(os.path.join(OUT, ".nojekyll"), "w").write("")
 page("404.html", "Pagina non trovata · Rustichelli Color", "Pagina non trovata.", phead("Questa pagina non c'è.", "Forse è stata spostata. Riparti dalla home o chiedici direttamente.", '<div class="cta fade"><a class="btn rosso" href="index.html">Torna alla home</a><a class="btn ghost" href="punti-vendita.html">Punti vendita</a></div>'), None)
 print(sorted(os.listdir(OUT)))
+
+exec(open(os.path.join(D, "products_build.py")).read())
