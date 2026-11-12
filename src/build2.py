@@ -192,13 +192,14 @@ def fill(s):
     return s
 
 # ---------- CSS ----------
-EXTRA_CSS = open(os.path.join(D, "inner.css")).read() + open(os.path.join(D, "hero.css")).read()
+EXTRA_CSS = open(os.path.join(D, "inner.css")).read() + open(os.path.join(D, "hero3.css")).read()
 open(os.path.join(OUT, "style.css"), "w").write(fill(CSS) + EXTRA_CSS)
 
 # ---------- JS ----------
 js = fill(JS)
 js = js.replace('$("#fs").textContent.trim()', "FS")
-js = js.replace('function heroIn(){$("#h1").classList.add("in");', 'function heroIn(){if(!$("#h1"))return;$("#h1").classList.add("in");')
+js = js.replace('function heroIn(){$("#h1").classList.add("in");setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},450)}', 'function heroIn(){if(!$("#h1"))return;$("#h1").classList.add("in");document.dispatchEvent(new Event("hero-in"));setTimeout(()=>{$("#hlead").classList.add("in");$("#hcta").classList.add("in")},$("#paintTitle")?1700:450)}')
+assert 'new Event("hero-in")' in js
 js = js.replace('const it=$("#intro");let seen=false;', 'const it=$("#intro");if(!it){heroIn();return}let seen=false;try{if(sessionStorage.getItem("rc-nav")==="1")seen=true}catch(e){}')
 js = js.replace('const hdr=$("#hdr"),hero=$("#hero"),', 'const hdr=$("#hdr"),hero=$("#hero")||$("#phead"),')
 js = js.replace('hdr.classList.toggle("solid",y>hh);','hdr.classList.toggle("solid",y>hh||document.body.classList.contains("lighthead"));')
@@ -212,7 +213,7 @@ js = js.replace('const form=$("#form"),msg=$("#msg");\nform.foto', 'const form=$
 assert js.rstrip().endswith('});'), js[-200:]
 js = js.rstrip() + "\n}\n"
 js = "const FS=`" + SHADER + "`;\n" + "const CATN=" + json.dumps({k: n for k, n, _, _ in CATS}, ensure_ascii=False) + ";\n" + js
-js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "can3d.js")).read()
+js += open(os.path.join(D, "nav.js")).read() + open(os.path.join(D, "paint.js")).read()
 for chk in ['if(!cv)return', 'if(!sec)return', 'if(y91)', 'if(form){', 'if(svc&&', 'if(!it){']:
     assert chk in js, chk
 open(os.path.join(OUT, "app.js"), "w").write(js)
@@ -220,7 +221,7 @@ open(os.path.join(OUT, "app.js"), "w").write(js)
 # ---------- HOME ----------
 home = fill(MAIN)
 home = home.replace('href="#preventivo">Chiedi un preventivo', 'href="preventivo.html">Chiedi un preventivo')
-home = home.replace('<a class="btn ghost" href="#negozi">Trova il negozio</a>', '<a class="btn ghost" href="punti-vendita.html">Trova il negozio</a>')
+home = home.replace('<a class="btn ink" href="#negozi">Trova il negozio</a>', '<a class="btn ink" href="punti-vendita.html">Trova il negozio</a>')
 aud_links = iter(["servizi.html#imprese", "servizi.html#progettisti", "servizi.html#casa"])
 home = re.sub(r'<li class="fade"><a href="#preventivo">', lambda m: f'<li class="fade"><a href="{next(aud_links)}">', home)
 home = home.replace('<h2 class="split">Non ti vendiamo solo il barattolo.</h2>', '<h2 class="split">Non ti vendiamo solo il barattolo.</h2>', 1)
@@ -231,7 +232,7 @@ assert "{{" not in home
 home_ld = [ORG] + [store_ld(s) for s in STORES]
 page("index.html", "Rustichelli Color · Colorificio a Lugo, Faenza, Cervia e Riccione",
      "Pitture, vernici, smalti e attrezzature per imprese, progettisti e privati. Dal 1991 a Lugo, Faenza, Cervia e Riccione.",
-     home, None, home_ld, intro=True, cls="home")
+     home, None, home_ld, intro=True, cls="home lighthead")
 
 # ---------- PRODOTTI ----------
 pc = "".join(f'''<article class="pc fade" id="{k}">
